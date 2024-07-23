@@ -4,16 +4,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.ui.Alignment
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import de.mindmarket.ivyleemaster.auth.login.presentation.LoginScreenRoot
-import de.mindmarket.ivyleemaster.core.presentation.GradientBackground
+import androidx.navigation.compose.rememberNavController
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +17,17 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             IvyLeeMasterTheme {
-                LoginScreenRoot()
+                Surface(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    val navController = rememberNavController()
+                    NavigationRoot(
+                        navController,
+                        isLoggedIn = false
+                    )
+                }
             }
         }
     }

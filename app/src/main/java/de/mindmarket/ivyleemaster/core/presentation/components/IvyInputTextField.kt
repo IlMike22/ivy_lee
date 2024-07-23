@@ -1,7 +1,9 @@
 package de.mindmarket.ivyleemaster.core.presentation.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -46,8 +48,9 @@ fun IvyInputTextField(
         ),
         singleLine = true,
         label = { Text(text = label) },
-        modifier = modifier
-            .padding(16.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(end = 16.dp)
     )
 }
 
@@ -88,8 +91,9 @@ fun IvyPasswordTextField(
             )
         },
         label = { Text(text = stringResource(R.string.your_password)) },
-        modifier = modifier
-            .padding(16.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(end = 16.dp)
     )
 }
 

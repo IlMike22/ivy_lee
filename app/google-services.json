@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "652050598505",
+    "project_id": "ivyleemaster",
+    "storage_bucket": "ivyleemaster.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:652050598505:android:6a9ec09c9e52a4814270f8",
+        "android_client_info": {
+          "package_name": "de.mindmarket.ivyleemaster"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDm9MFI37c7OwsXsA6fUF8YUVMJMrzFO3E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

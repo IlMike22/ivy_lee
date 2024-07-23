@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">IvyLeeMaster</string>
-    <string name="your_password">Your password</string>
+    <string name="your_password">Password</string>
     <string name="toggle_password_visibility">Toogle password visibility</string>
-    <string name="type_user_name">Type in your username</string>
+    <string name="type_user_name">Username</string>
     <string name="type_password">Type in your password</string>
     <string name="login">Login</string>
+    <string name="welcome_ivy">Hello. Please login to use Ivy!</string>
+    <string name="register">Register</string>
 </resources>

@@ -1,6 +1,7 @@
 package de.mindmarket.ivyleemaster.core.presentation.components
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.OutlinedButton
@@ -17,11 +18,7 @@ fun IvyPrimaryButton(
     text: String,
     onClick: () -> Unit
 ) {
-    Button(
-        onClick = onClick,
-        modifier = modifier
-            .padding(16.dp)
-    ) {
+    Button(onClick = onClick) {
         Text(text = text)
     }
 }
@@ -33,8 +30,6 @@ fun IvySecondaryButton(
     onClick: () -> Unit
 ) {
     FilledTonalButton(
-        modifier = modifier
-            .padding(16.dp),
         onClick = onClick
     ) {
        Text(text = text)
@@ -47,11 +42,7 @@ fun IvyOutlinedButton(
     text: String,
     onClick: () -> Unit
 ) {
-    OutlinedButton(
-        modifier = modifier
-            .padding(16.dp),
-        onClick = onClick
-    ) {
+    OutlinedButton(onClick = onClick) {
         Text(text = text)
     }
 }
