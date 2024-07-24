@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package de.mindmarket.ivyleemaster.auth.login.presentation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -53,7 +56,7 @@ private fun LoginScreen(
     GradientBackground {
         Column(
             modifier = Modifier
-                .padding(start = 16.dp)
+                .padding(start = 16.dp, end = 16.dp)
                 .fillMaxSize()
         ) {
             Text(
@@ -69,6 +72,7 @@ private fun LoginScreen(
             )
             Spacer(Modifier.height(16.dp))
             IvyInputTextField(
+                state = state.username,
                 label = stringResource(R.string.type_user_name)
             )
             Spacer(modifier = Modifier.height(16.dp))

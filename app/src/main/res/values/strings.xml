@@ -13,4 +13,13 @@
     <string name="repeat_password">Repeat password</string>
     <string name="register_description">Enter your email and define your password to register to IvyLee!</string>
     <string name="go_to_login">Go to login</string>
+
+    <string name="error_bad_request">You have a bad request.</string>
+    <string name="error_server_error">You have a server error.</string>
+    <string name="error_request_timeout">You ran in a timeout. Please try again.</string>
+    <string name="error_unauthorized">You are not authorized.</string>
+    <string name="error_no_internet">You have no internet.</string>
+    <string name="error_serialization">Serialization failed</string>
+    <string name="registration_success_message">You`re registration was successfully!</string>
+    <string name="registration_failed">Your registration failed.</string>
 </resources>

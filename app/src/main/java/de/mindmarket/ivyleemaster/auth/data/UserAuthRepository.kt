@@ -6,12 +6,12 @@ import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
 class UserAuthRepository(
     private val auth: FirebaseAuth,
     private val remoteDataSource: AuthRemoteDataSource
-): AuthRepository {
+) : AuthRepository {
     override suspend fun loginUser() {
         auth.currentUser
     }
 
-    override suspend fun registerUser(email:String, password:String) {
-        remoteDataSource.register(email, password)
+    override suspend fun registerUser(email: String, password: String): Throwable? {
+        return remoteDataSource.register(email, password)
     }
 }
