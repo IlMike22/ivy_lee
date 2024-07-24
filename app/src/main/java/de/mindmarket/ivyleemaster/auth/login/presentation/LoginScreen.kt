@@ -2,6 +2,7 @@
 
 package de.mindmarket.ivyleemaster.auth.login.presentation
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,20 +16,29 @@ import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import de.mindmarket.ivyleemaster.R
+import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterEvent
 import de.mindmarket.ivyleemaster.core.presentation.GradientBackground
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyInputTextField
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyPasswordTextField
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyPrimaryButton
 import de.mindmarket.ivyleemaster.core.presentation.components.IvySecondaryButton
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -38,6 +48,37 @@ fun LoginScreenRoot(
     onLoginSuccess: () -> Unit,
     onRegisterClick: () -> Unit
 ) {
+    val context = LocalContext.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    val lifeCycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(viewModel.events, lifeCycleOwner.lifecycle) {
+        lifeCycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            withContext(Dispatchers.Main.immediate) {
+                viewModel.events.collect { event ->
+                    when (event) {
+                        is LoginEvent.OnLoginFailed -> {
+                            keyboardController?.hide()
+                            Toast.makeText(
+                                context,
+                                event.error.asString(context),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        LoginEvent.OnLoginSuccess -> {
+                            keyboardController?.hide()
+                            Toast.makeText(
+                                context,
+                                context.getString(
+                                    R.string.login_success_message
+                                ), Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     LoginScreen(
         state = viewModel.state,
@@ -76,7 +117,10 @@ private fun LoginScreen(
                 label = stringResource(R.string.type_user_name)
             )
             Spacer(modifier = Modifier.height(16.dp))
-            IvyPasswordTextField()
+            IvyPasswordTextField(
+                state = state.password,
+                label = stringResource(R.string.your_password)
+            )
             Spacer(Modifier.height(16.dp))
 
             Row(

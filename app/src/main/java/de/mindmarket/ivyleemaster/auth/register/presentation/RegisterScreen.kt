@@ -25,6 +25,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.core.presentation.GradientBackground
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyInputTextField
+import de.mindmarket.ivyleemaster.core.presentation.components.IvyPasswordTextField
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyPrimaryButton
 import de.mindmarket.ivyleemaster.core.presentation.components.IvySecondaryButton
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
@@ -108,7 +109,7 @@ fun RegisterScreen(
                 label = stringResource(R.string.your_email)
             )
             Spacer(modifier = Modifier.height(16.dp))
-            IvyInputTextField(
+            IvyPasswordTextField(
                 state = state.password,
                 label = stringResource(R.string.your_password)
             )
@@ -123,12 +124,14 @@ fun RegisterScreen(
             ) {
                 IvyPrimaryButton(
                     text = stringResource(id = R.string.register),
-                    onClick = { onAction(RegisterAction.OnRegisterClick) }
+                    onClick = { onAction(RegisterAction.OnRegisterClick) },
+                    modifier = Modifier.weight(1f)
                 )
                 Spacer(modifier = Modifier.width(16.dp))
                 IvySecondaryButton(
                     text = stringResource(R.string.go_to_login),
-                    onClick = { onAction(RegisterAction.OnNavigateToLoginClick) }
+                    onClick = { onAction(RegisterAction.OnNavigateToLoginClick) },
+                    modifier = Modifier.weight(1f)
                 )
             }
         }

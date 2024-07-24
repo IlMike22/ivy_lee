@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package de.mindmarket.ivyleemaster.core.presentation.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -39,16 +41,12 @@ import androidx.compose.ui.unit.dp
 import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun IvyInputTextField(
     label: String,
     modifier: Modifier = Modifier,
     state: TextFieldState
 ) {
-    var input by rememberSaveable {
-        mutableStateOf("")
-    }
     BasicTextField2(
         state = state,
         textStyle = TextStyle(
@@ -90,11 +88,10 @@ fun IvyInputTextField(
 
 @Composable
 fun IvyPasswordTextField(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    state: TextFieldState,
+    label:String
 ) {
-    var input by rememberSaveable {
-        mutableStateOf("")
-    }
     var showPassword by rememberSaveable {
         mutableStateOf(false)
     }
@@ -102,32 +99,43 @@ fun IvyPasswordTextField(
         PasswordVisualTransformation()
     }
 
-    OutlinedTextField(
-        value = input,
-        onValueChange = {
-            input = it
-        },
-        visualTransformation = if (showPassword) VisualTransformation.None else passwordVisualTransformation,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+    BasicTextField2(
+        state = state,
         textStyle = TextStyle(
             color = MaterialTheme.colorScheme.onSurface,
             fontWeight = FontWeight.Bold
         ),
-        singleLine = true,
-        trailingIcon = {
-            Icon(
-                painter = if (showPassword) painterResource(R.drawable.password_visibility)
-                else painterResource(R.drawable.password_visibility_off),
-                contentDescription = stringResource(R.string.toggle_password_visibility),
-                modifier = Modifier.clickable {
-                    showPassword = !showPassword
-                }
-            )
+        lineLimits = TextFieldLineLimits.SingleLine,
+        cursorBrush = SolidColor(MaterialTheme.colorScheme.onBackground),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        modifier = Modifier.run {
+            fillMaxWidth()
+                .height(54.dp)
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                .padding(16.dp)
         },
-        label = { Text(text = stringResource(R.string.your_password)) },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(end = 16.dp)
+        decorator = { innerBox ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    if (state.text.isEmpty()) {
+                        Text(
+                            text = label,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                    }
+                    innerBox()
+                }
+            }
+        }
     )
 }
 
@@ -147,6 +155,9 @@ private fun IvyInputTextFieldPreview() {
 @Composable
 private fun IvyPasswordTextFieldPreview() {
     IvyLeeMasterTheme {
-        IvyPasswordTextField()
+        IvyPasswordTextField(
+            state = TextFieldState(),
+            label = "password"
+        )
     }
 }

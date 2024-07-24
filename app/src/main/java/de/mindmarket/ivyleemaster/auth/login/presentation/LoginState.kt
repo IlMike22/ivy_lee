@@ -7,7 +7,8 @@ import androidx.compose.foundation.text2.input.TextFieldState
 
 data class LoginState(
     val username: TextFieldState = TextFieldState(),
-    val password: String = "",
+    val password: TextFieldState = TextFieldState(),
     val isError: Boolean = false,
-    val isPasswordVisible: Boolean = false
+    val isPasswordVisible: Boolean = false,
+    val isLoggingIn:Boolean = false
 )

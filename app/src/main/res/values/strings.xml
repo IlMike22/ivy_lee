@@ -21,5 +21,7 @@
     <string name="error_no_internet">You have no internet.</string>
     <string name="error_serialization">Serialization failed</string>
     <string name="registration_success_message">You`re registration was successfully!</string>
+    <string name="login_success_message">You are successfully logged in!</string>
     <string name="registration_failed">Your registration failed.</string>
+    <string name="login_failed">Your login failed.</string>
 </resources>

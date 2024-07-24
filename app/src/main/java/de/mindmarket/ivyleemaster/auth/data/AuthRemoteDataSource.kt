@@ -15,12 +15,19 @@ class AuthRemoteDataSource(
             email, password
         ).addOnFailureListener {
             continuation.resume(Throwable(it.message))
-        }.addOnSuccessListener { result ->
+        }.addOnSuccessListener {
             continuation.resume(null)
         }
     }
 
-    suspend fun login(email: String, password: String) {
-
+    suspend fun login(email: String, password: String) = suspendCoroutine {  continuation ->
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnFailureListener {
+                continuation.resume(null)
+            }
+            .addOnSuccessListener {
+                continuation.resume(it.user)
+            }
     }
+
 }
