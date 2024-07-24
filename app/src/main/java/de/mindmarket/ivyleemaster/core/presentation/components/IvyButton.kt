@@ -1,7 +1,5 @@
 package de.mindmarket.ivyleemaster.core.presentation.components
 
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.OutlinedButton
@@ -9,7 +7,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
 
 @Composable
@@ -18,7 +15,10 @@ fun IvyPrimaryButton(
     text: String,
     onClick: () -> Unit
 ) {
-    Button(onClick = onClick) {
+    Button(
+        modifier = modifier,
+        onClick = onClick
+    ) {
         Text(text = text)
     }
 }
@@ -30,9 +30,10 @@ fun IvySecondaryButton(
     onClick: () -> Unit
 ) {
     FilledTonalButton(
+        modifier = modifier,
         onClick = onClick
     ) {
-       Text(text = text)
+        Text(text = text)
     }
 }
 

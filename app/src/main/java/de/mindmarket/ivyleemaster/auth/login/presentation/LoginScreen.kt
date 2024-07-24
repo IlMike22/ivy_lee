@@ -1,6 +1,5 @@
 package de.mindmarket.ivyleemaster.auth.login.presentation
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,17 +8,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.LineHeightStyle
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import de.mindmarket.ivyleemaster.IvyLeeMasterApp
 import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.core.presentation.GradientBackground
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyInputTextField
@@ -39,7 +38,8 @@ fun LoginScreenRoot(
 
     LoginScreen(
         state = viewModel.state,
-        onAction = viewModel::onAction
+        onAction = viewModel::onAction,
+        onRegisterClick = onRegisterClick
     )
 }
 
@@ -47,6 +47,7 @@ fun LoginScreenRoot(
 private fun LoginScreen(
     modifier: Modifier = Modifier,
     state: LoginState,
+    onRegisterClick: () -> Unit,
     onAction: (LoginAction) -> Unit
 ) {
     GradientBackground {
@@ -57,6 +58,12 @@ private fun LoginScreen(
         ) {
             Text(
                 modifier = Modifier.padding(top = 64.dp),
+                text = stringResource(id = R.string.login),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.headlineLarge
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
                 text = stringResource(R.string.welcome_ivy),
                 color = MaterialTheme.colorScheme.onSurface
             )
@@ -67,10 +74,16 @@ private fun LoginScreen(
             Spacer(modifier = Modifier.height(16.dp))
             IvyPasswordTextField()
             Spacer(Modifier.height(16.dp))
+
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp)
             ) {
                 IvyPrimaryButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
                     text = stringResource(R.string.login),
                     onClick = {
                         onAction(LoginAction.OnLoginClick)
@@ -78,10 +91,30 @@ private fun LoginScreen(
                 )
                 Spacer(Modifier.width(16.dp))
                 IvySecondaryButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
                     text = stringResource(R.string.register),
                     onClick = {
-                        onAction(LoginAction.OnRegisterClick)
+                        onRegisterClick()
                     }
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row {
+                Text(
+                    text = stringResource(R.string.forgot_password),
+                    color = MaterialTheme.colorScheme.onBackground,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.width(4.dp))
+                ClickableText(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(MaterialTheme.colorScheme.secondary)) {
+                            append(stringResource(id = R.string.click_here))
+                        }
+                    },
+                    onClick = { onAction(LoginAction.OnForgetPasswordClick) }
                 )
             }
         }
@@ -97,7 +130,8 @@ private fun LoginScreenPreview() {
                 isError = false,
                 isPasswordVisible = false
             ),
-            onAction = {}
+            onAction = {},
+            onRegisterClick = {}
         )
     }
 }

@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import de.mindmarket.ivyleemaster.auth.login.presentation.LoginScreenRoot
+import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterScreenRoot
 
 @Composable
 fun NavigationRoot(
@@ -30,26 +31,34 @@ private fun NavGraphBuilder.authGraph(navController: NavController) {
         route = "auth",
         startDestination = "login"
     ) {
-//        composable(route = "intro") {
-//            IntroScreenRoot(
-//                onLoginClick = {
-//                    navController.navigate("login")
-//                },
-//                onRegisterClick = {
-//                    navController.navigate("register")
-//                }
-//            )
-//        }
-
         composable(route = "login") {
             LoginScreenRoot(
-                onLoginSuccess = {}, // TODO handle click listener
-                onRegisterClick = {} // TODO handle click listener
+                onLoginSuccess = {},
+                onRegisterClick = {
+                    navController.navigate("register") {
+                        popUpTo("login") {
+                            inclusive = true
+                            saveState = true
+                        }
+                        restoreState = true
+                    }
+                }
             )
         }
 
         composable(route="register") {
-            // TODO register screen
+            RegisterScreenRoot(
+                onRegisterClick = { /*TODO*/ },
+                onNavigateToLoginClick = {
+                    navController.navigate("login") {
+                        popUpTo("register") {
+                            inclusive = true
+                            saveState = true
+                        }
+                        restoreState = true
+                    }
+                }
+            )
         }
     }
 }

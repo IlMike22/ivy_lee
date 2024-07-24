@@ -25,6 +25,8 @@ class LoginViewModel() : ViewModel() {
                    isPasswordVisible = !state.isPasswordVisible
                )
             }
+
+            LoginAction.OnForgetPasswordClick ->{}
         }
     }
 }
