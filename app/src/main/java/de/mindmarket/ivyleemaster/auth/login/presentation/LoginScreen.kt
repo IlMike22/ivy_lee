@@ -73,6 +73,7 @@ fun LoginScreenRoot(
                                     R.string.login_success_message
                                 ), Toast.LENGTH_LONG
                             ).show()
+                            onLoginSuccess()
                         }
                     }
                 }

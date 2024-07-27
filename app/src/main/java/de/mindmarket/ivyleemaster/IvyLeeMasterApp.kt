@@ -2,6 +2,7 @@ package de.mindmarket.ivyleemaster
 
 import android.app.Application
 import de.mindmarket.ivyleemaster.di.appModule
+import de.mindmarket.ivyleemaster.di.databaseModule
 import de.mindmarket.ivyleemaster.di.firebaseModule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -19,7 +20,7 @@ class IvyLeeMasterApp: Application() {
         startKoin {
             androidLogger()
             androidContext(this@IvyLeeMasterApp)
-            modules(appModule, firebaseModule)
+            modules(appModule, firebaseModule, databaseModule)
         }
     }
 }

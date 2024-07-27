@@ -7,6 +7,7 @@ import de.mindmarket.ivyleemaster.auth.data.UserAuthRepository
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
 import de.mindmarket.ivyleemaster.auth.login.presentation.LoginViewModel
 import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterViewModel
+import de.mindmarket.ivyleemaster.task.presentation.TaskViewModel
 import kotlinx.coroutines.CoroutineScope
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModelOf
@@ -20,6 +21,7 @@ val appModule = module {
     }
     viewModelOf(::LoginViewModel)
     viewModelOf(::RegisterViewModel)
+    viewModelOf(::TaskViewModel)
     singleOf(::AuthRemoteDataSource)
     singleOf(::UserAuthRepository).bind<AuthRepository>()
     singleOf(::FirebaseAuth)

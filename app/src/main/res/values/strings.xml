@@ -24,4 +24,10 @@
     <string name="login_success_message">You are successfully logged in!</string>
     <string name="registration_failed">Your registration failed.</string>
     <string name="login_failed">Your login failed.</string>
+    <string name="login_credentials_empty">Your username or password must not be empty!</string>
+    <string name="navigate_back">navigate back</string>
+    <string name="open_menu">open menu</string>
+    <string name="ivy_logo">ivy logo</string>
+    <string name="ivy_lee_title">IvyLee Master</string>
+    <string name="settings">Settings</string>
 </resources>

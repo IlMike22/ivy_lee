@@ -76,4 +76,7 @@ dependencies {
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation(libs.firebase.auth.ktx)
+
+    // Room
+    implementation(libs.androidx.room.ktx)
 }

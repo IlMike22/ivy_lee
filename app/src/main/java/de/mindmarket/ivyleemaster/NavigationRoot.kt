@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import de.mindmarket.ivyleemaster.auth.login.presentation.LoginScreenRoot
 import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterScreenRoot
+import de.mindmarket.ivyleemaster.task.presentation.TaskScreenRoot
 
 @Composable
 fun NavigationRoot(
@@ -33,7 +34,13 @@ private fun NavGraphBuilder.authGraph(navController: NavController) {
     ) {
         composable(route = "login") {
             LoginScreenRoot(
-                onLoginSuccess = {},
+                onLoginSuccess = {
+                    navController.navigate("ivy_task") {
+                        popUpTo("login") {
+                            inclusive = true
+                        }
+                    }
+                },
                 onRegisterClick = {
                     navController.navigate("register") {
                         popUpTo("login") {
@@ -65,12 +72,13 @@ private fun NavGraphBuilder.authGraph(navController: NavController) {
 private fun NavGraphBuilder.mainGraph(navController: NavController) {
     navigation(
         route = "main",
-        startDestination = "ivy_overview"
+        startDestination = "ivy_task"
     ) {
-        composable(route = "ivy_overview") {
+        composable(route = "ivy_task") {
+            TaskScreenRoot()
 
         }
-        composable(route = "ivy_ideas") {
+        composable(route = "ivy_idea") {
 
         }
         composable(route = "ivy_create") {
