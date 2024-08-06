@@ -13,6 +13,9 @@ val firebaseModule = module {
         FirebaseAuth.getInstance()
     }
     single {
-        FirebaseDatabase.getInstance().reference
+        FirebaseDatabase.getInstance(FIREBASE_DATABASE_URL).reference
     }
 }
+
+private const val FIREBASE_DATABASE_URL = "https://ivyleemaster-default-rtdb.europe-west1.firebasedatabase.app"
+

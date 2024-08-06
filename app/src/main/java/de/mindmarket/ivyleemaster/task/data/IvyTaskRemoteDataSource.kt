@@ -18,9 +18,14 @@ class IvyTaskRemoteDataSource(
                 .child(idea.userId)
                 .setValue(idea)
                 .addOnCompleteListener {
+                    println("!! operation succeeded")
                     continuation.resume(Result.Success(Unit))
                 }
+                .addOnCanceledListener {
+                    println("!! operation cancelled.")
+                }
                 .addOnFailureListener { error ->
+                    println("!! operation failed")
                    continuation.resume(Result.Error(DataError.Network.SERVER_ERROR))
                 }
         }
