@@ -8,7 +8,7 @@ import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
 
 class UserAuthRepository(
     private val remoteDataSource: AuthRemoteDataSource,
-    private val localDataSource: AuthLocalDataSource
+//    private val localDataSource: AuthLocalDataSource
 ) : AuthRepository {
     override suspend fun loginUser(email: String, password: String): UserData {
         val userInfo = remoteDataSource.login(email, password)
@@ -21,7 +21,7 @@ class UserAuthRepository(
             photoUrl = userInfo.photoUrl
         )
 
-        localDataSource.upsertUserData(userData)
+//        localDataSource.upsertUserData(userData)
 
         return userData
     }

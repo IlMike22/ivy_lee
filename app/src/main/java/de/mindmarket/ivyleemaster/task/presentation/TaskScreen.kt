@@ -2,6 +2,7 @@
 
 package de.mindmarket.ivyleemaster.task.presentation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
@@ -80,24 +82,6 @@ fun TaskScreen(
                 )
             },
             content = { padding ->
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .nestedScroll(scrollBehavior.nestedScrollConnection)
-                        .padding(horizontal = 16.dp),
-                    contentPadding = padding
-                ) {
-                    items(
-                        listOf(
-                            "Task1",
-                            "Task2",
-                            "Task3"
-                        )
-                    ) {
-                        Text(text = "Task1")
-                    }
-                }
-
             }
         )
     }

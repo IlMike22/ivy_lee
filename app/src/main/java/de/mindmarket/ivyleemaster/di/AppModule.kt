@@ -7,6 +7,9 @@ import de.mindmarket.ivyleemaster.auth.data.UserAuthRepository
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
 import de.mindmarket.ivyleemaster.auth.login.presentation.LoginViewModel
 import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterViewModel
+import de.mindmarket.ivyleemaster.task.data.IvyTaskRemoteDataSource
+import de.mindmarket.ivyleemaster.task.data.IvyTaskRepository
+import de.mindmarket.ivyleemaster.task.domain.TaskRepository
 import de.mindmarket.ivyleemaster.task.presentation.TaskViewModel
 import kotlinx.coroutines.CoroutineScope
 import org.koin.android.ext.koin.androidApplication
@@ -19,10 +22,16 @@ val appModule = module {
     single<CoroutineScope> {
         (androidApplication() as IvyLeeMasterApp).applicationScope
     }
-    viewModelOf(::LoginViewModel)
-    viewModelOf(::RegisterViewModel)
-    viewModelOf(::TaskViewModel)
+
+    // Auth
     singleOf(::AuthRemoteDataSource)
     singleOf(::UserAuthRepository).bind<AuthRepository>()
     singleOf(::FirebaseAuth)
+    viewModelOf(::LoginViewModel)
+    viewModelOf(::RegisterViewModel)
+
+    // Task
+    singleOf(::IvyTaskRepository).bind<TaskRepository>()
+    singleOf(::IvyTaskRemoteDataSource)
+    viewModelOf(::TaskViewModel)
 }

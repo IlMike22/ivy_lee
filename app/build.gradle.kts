@@ -74,7 +74,8 @@ dependencies {
     implementation(libs.bundles.koin)
 
     // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.database.ktx)
     implementation(libs.firebase.auth.ktx)
 
     // Room
