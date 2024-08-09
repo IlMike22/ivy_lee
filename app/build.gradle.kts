@@ -21,6 +21,12 @@ android {
         }
     }
 
+//    kapt {
+//        arguments {
+//            arg("room.schemaLocation","$projectDir/schemas")
+//        }
+//    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -80,4 +86,7 @@ dependencies {
 
     // Room
     implementation(libs.androidx.room.ktx)
+
+    // KSP
+    compileOnly(libs.ksp.gradlePlugin)
 }
