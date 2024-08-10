@@ -30,4 +30,6 @@
     <string name="ivy_logo">ivy logo</string>
     <string name="ivy_lee_title">IvyLee Master</string>
     <string name="settings">Settings</string>
+    <string name="add_idea_enter_new_idea">Please enter a new idea.</string>
+    <string name="add_idea_hint_text_title">Title</string>
 </resources>

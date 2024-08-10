@@ -19,11 +19,13 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun IdeaScreenRoot(
-    viewModel: IdeaViewModel = koinViewModel()
+    viewModel: IdeaViewModel = koinViewModel(),
+    onAddIdeaClick: () -> Unit
 ) {
     IdeaScreen(
         state = viewModel.state,
-        onAction = viewModel::onAction
+        onAction = viewModel::onAction,
+        onAddIdeaClick = onAddIdeaClick
     )
 }
 
@@ -31,6 +33,7 @@ fun IdeaScreenRoot(
 fun IdeaScreen(
     state: IdeaState,
     onAction: (IdeaAction) -> Unit,
+    onAddIdeaClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     GradientBackground {
@@ -39,7 +42,7 @@ fun IdeaScreen(
                 IvyFloatingActionButton(
                     icon = Icons.Filled.Add,
                     onClick = {
-                        onAction(IdeaAction.OnAddIdeaClick)
+                        onAddIdeaClick()
                     },
                     modifier = Modifier.padding(bottom = 80.dp)
                 )
@@ -65,7 +68,8 @@ private fun IdeaScreenPreview() {
     IvyLeeMasterTheme {
         IdeaScreen(
             state = IdeaState(),
-            onAction = {}
+            onAction = {},
+            onAddIdeaClick = {}
         )
     }
 }

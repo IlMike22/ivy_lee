@@ -1,5 +1,9 @@
-package de.mindmarket.ivyleemaster.core.data.model
+@file:OptIn(ExperimentalFoundationApi::class)
 
+package de.mindmarket.ivyleemaster.core.domain.model
+
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.text2.input.TextFieldState
 import de.mindmarket.ivyleemaster.auth.data.UserId
 
 typealias IdeaId = String
@@ -7,8 +11,8 @@ typealias IdeaId = String
 data class Idea(
     val id: IdeaId,
     val userId: UserId,
-    val title: String,
-    val subtitle: String = "",
+    val title: TextFieldState = TextFieldState(),
+    val subtitle: TextFieldState = TextFieldState(),
     val genre: Genre = Genre.UNDEFINED,
     val mainTopic: IdeaId? = null,
     val isUrgent: Boolean = false,
@@ -20,7 +24,7 @@ data class Idea(
         val EMPTY = Idea(
             id = "",
             userId = "",
-            title = ""
+            title = TextFieldState("")
         )
     }
 }

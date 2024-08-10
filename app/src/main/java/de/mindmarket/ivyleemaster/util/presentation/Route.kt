@@ -10,4 +10,5 @@ object Route {
     const val TASK = "ivy_task"
     const val IDEA = "ivy_idea"
     const val SETTINGS = "ivy_settings"
+    const val ADD_IDEA = "ivy_add_idea"
 }

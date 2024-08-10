@@ -14,6 +14,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
+import de.mindmarket.ivyleemaster.add_idea.presentation.AddIdeaScreenRoot
 import de.mindmarket.ivyleemaster.auth.login.presentation.LoginScreenRoot
 import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterScreenRoot
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaScreenRoot
@@ -85,14 +86,23 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
     ) {
         composable(route = Route.TASK) {
             TaskScreenRoot()
-
         }
         composable(route = Route.IDEA) {
-            IdeaScreenRoot()
-
+            IdeaScreenRoot(
+                onAddIdeaClick = {
+                    navController.navigate(Route.ADD_IDEA)
+                }
+            )
         }
         composable(route = Route.SETTINGS) {
             SettingsScreenRoot()
+        }
+        composable(route = Route.ADD_IDEA) {
+            AddIdeaScreenRoot(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }
