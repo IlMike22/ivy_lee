@@ -1,5 +1,6 @@
 package de.mindmarket.ivyleemaster.di
 
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.auth.FirebaseAuth
 import de.mindmarket.ivyleemaster.IvyLeeMasterApp
 import de.mindmarket.ivyleemaster.auth.data.AuthRemoteDataSource
@@ -7,6 +8,9 @@ import de.mindmarket.ivyleemaster.auth.data.UserAuthRepository
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
 import de.mindmarket.ivyleemaster.auth.login.presentation.LoginViewModel
 import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterViewModel
+import de.mindmarket.ivyleemaster.idea.presentation.IdeaScreen
+import de.mindmarket.ivyleemaster.idea.presentation.IdeaViewModel
+import de.mindmarket.ivyleemaster.settings.SettingsViewModel
 import de.mindmarket.ivyleemaster.task.data.IvyTaskRemoteDataSource
 import de.mindmarket.ivyleemaster.task.data.IvyTaskRepository
 import de.mindmarket.ivyleemaster.task.domain.TaskRepository
@@ -34,4 +38,10 @@ val appModule = module {
     singleOf(::IvyTaskRepository).bind<TaskRepository>()
     singleOf(::IvyTaskRemoteDataSource)
     viewModelOf(::TaskViewModel)
+
+    // Idea
+    viewModelOf(::IdeaViewModel)
+
+    // Settings
+    viewModelOf(::SettingsViewModel)
 }

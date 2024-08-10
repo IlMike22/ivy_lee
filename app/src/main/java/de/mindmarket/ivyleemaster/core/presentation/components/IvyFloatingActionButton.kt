@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import de.mindmarket.ivyleemaster.ui.theme.Add
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
-import de.mindmarket.ivyleemaster.ui.theme.Settings
 
 @Composable
 fun IvyFloatingActionButton(

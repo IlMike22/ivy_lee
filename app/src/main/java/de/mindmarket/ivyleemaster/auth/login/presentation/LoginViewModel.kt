@@ -3,6 +3,8 @@
 package de.mindmarket.ivyleemaster.auth.login.presentation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.text2.input.TextFieldState
+import androidx.compose.foundation.text2.input.setTextAndSelectAll
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -25,10 +27,6 @@ class LoginViewModel(
     val events = eventChannel.receiveAsFlow()
 
 
-    init {
-
-    }
-
     fun onAction(action: LoginAction) {
         when (action) {
             is LoginAction.OnLoginClick -> loginUser()
@@ -44,6 +42,8 @@ class LoginViewModel(
     }
 
     private fun loginUser() {
+        state.username.setTextAndSelectAll("michaelwidlok@yahoo.de") // TODO remove later, just for internal test
+        state.password.setTextAndSelectAll("mepfde22")
         viewModelScope.launch {
             if (state.username.text.isBlank() || state.password.text.isBlank()) {
                 eventChannel.send(LoginEvent.OnLoginFailed(UiText.StringResource(R.string.login_credentials_empty)))
