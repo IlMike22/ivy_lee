@@ -1,6 +1,5 @@
 package de.mindmarket.ivyleemaster.di
 
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.auth.FirebaseAuth
 import de.mindmarket.ivyleemaster.IvyLeeMasterApp
 import de.mindmarket.ivyleemaster.add_idea.presentation.AddIdeaViewModel
@@ -9,7 +8,6 @@ import de.mindmarket.ivyleemaster.auth.data.UserAuthRepository
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
 import de.mindmarket.ivyleemaster.auth.login.presentation.LoginViewModel
 import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterViewModel
-import de.mindmarket.ivyleemaster.idea.presentation.IdeaScreen
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaViewModel
 import de.mindmarket.ivyleemaster.settings.SettingsViewModel
 import de.mindmarket.ivyleemaster.task.data.IvyTaskRemoteDataSource

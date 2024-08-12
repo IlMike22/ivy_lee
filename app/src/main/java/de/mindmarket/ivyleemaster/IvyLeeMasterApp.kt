@@ -18,9 +18,8 @@ class IvyLeeMasterApp: Application() {
         super.onCreate()
 
         startKoin {
-            androidLogger()
-            androidContext(this@IvyLeeMasterApp)
             modules(appModule, firebaseModule, databaseModule)
+            androidContext(this@IvyLeeMasterApp)
         }
     }
 }

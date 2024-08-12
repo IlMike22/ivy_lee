@@ -1,4 +1,6 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+    ExperimentalFoundationApi::class
+)
 
 package de.mindmarket.ivyleemaster.add_idea.presentation
 
@@ -6,10 +8,13 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,11 +26,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.core.presentation.GradientBackground
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyInputTextField
+import de.mindmarket.ivyleemaster.core.presentation.components.IvyPrimaryButton
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyToolbar
 import de.mindmarket.ivyleemaster.core.presentation.util.DropDownItem
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaAction
@@ -91,21 +98,38 @@ fun AddIdeaScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                        .padding(horizontal = 8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        modifier = Modifier.padding(top = 64.dp),
                         text = stringResource(R.string.add_idea_enter_new_idea),
                         color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.labelMedium
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier
+                            .align(Alignment.Start)
+                            .padding(top = 64.dp)
+
                     )
                     Spacer(Modifier.height(16.dp))
                     IvyInputTextField(
                         state = state.newIdea.title,
                         label = stringResource(R.string.add_idea_hint_text_title)
                     )
+                    Spacer(Modifier.height(16.dp))
+                    IvyInputTextField(
+                        state = state.newIdea.subtitle,
+                        label = stringResource(R.string.add_idea_hint_text_subtitle)
+                    )
+                    Column(
+                        modifier = Modifier.fillMaxHeight(),
+                        verticalArrangement = Arrangement.Bottom
+                    ) {
+                        IvyPrimaryButton(
+                            modifier = Modifier.fillMaxWidth().padding(bottom = 128.dp).height(64.dp),
+                            text = stringResource(R.string.add_idea_primary_button_text),
+                            onClick = {}
+                        )
+                    }
                 }
             }
         )
