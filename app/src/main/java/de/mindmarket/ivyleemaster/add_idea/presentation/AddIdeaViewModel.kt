@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaAction
-import de.mindmarket.ivyleemaster.idea.presentation.IdeaState
 
 class AddIdeaViewModel(): ViewModel() {
     var state by mutableStateOf(AddIdeaState())

@@ -1,4 +1,5 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
+@file:OptIn(
+    ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
     ExperimentalFoundationApi::class
 )
 
@@ -7,6 +8,7 @@ package de.mindmarket.ivyleemaster.add_idea.presentation
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +17,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -26,13 +32,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.core.presentation.GradientBackground
+import de.mindmarket.ivyleemaster.core.presentation.components.IvyChip
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyInputTextField
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyPrimaryButton
+import de.mindmarket.ivyleemaster.core.presentation.components.IvySwitch
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyToolbar
 import de.mindmarket.ivyleemaster.core.presentation.util.DropDownItem
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaAction
@@ -98,8 +105,8 @@ fun AddIdeaScreen(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 8.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(padding)
+                        .padding(horizontal = 8.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.add_idea_enter_new_idea),
@@ -107,7 +114,6 @@ fun AddIdeaScreen(
                         style = MaterialTheme.typography.labelMedium,
                         modifier = Modifier
                             .align(Alignment.Start)
-                            .padding(top = 64.dp)
 
                     )
                     Spacer(Modifier.height(16.dp))
@@ -120,12 +126,44 @@ fun AddIdeaScreen(
                         state = state.newIdea.subtitle,
                         label = stringResource(R.string.add_idea_hint_text_subtitle)
                     )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    IvySwitch(
+                        onCheckChange = { state.newIdea.isUrgent },
+                        label = stringResource(R.string.add_idea_switch_high_priority_text)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    IvySwitch(
+                        onCheckChange = { state.newIdea.isRepeatable },
+                        label = stringResource(R.string.add_idea_switch_repeatable_text)
+                    )
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        IvyChip(
+                            label = "Life",
+                            icon = Icons.Filled.ShoppingCart,
+                            onClick = { /*TODO*/ })
+                        Spacer(modifier = Modifier.width(16.dp))
+                        IvyChip(
+                            label = "Business",
+                            icon = Icons.Filled.AccountBox,
+                            onClick = { /*TODO*/ })
+                        Spacer(modifier = Modifier.width(16.dp))
+                        IvyChip(
+                            label = "Health",
+                            icon = Icons.Filled.Call,
+                            onClick = { /*TODO*/ })
+                    }
                     Column(
                         modifier = Modifier.fillMaxHeight(),
                         verticalArrangement = Arrangement.Bottom
                     ) {
                         IvyPrimaryButton(
-                            modifier = Modifier.fillMaxWidth().padding(bottom = 128.dp).height(64.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = 128.dp)
+                                .height(64.dp),
                             text = stringResource(R.string.add_idea_primary_button_text),
                             onClick = {}
                         )

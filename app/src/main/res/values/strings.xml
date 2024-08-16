@@ -34,4 +34,6 @@
     <string name="add_idea_hint_text_title">Title</string>
     <string name="add_idea_hint_text_subtitle">Subtitle (optional)</string>
     <string name="add_idea_primary_button_text">Add new idea</string>
+    <string name="add_idea_switch_high_priority_text">High priority</string>
+    <string name="add_idea_switch_repeatable_text">Repeatable</string>
 </resources>

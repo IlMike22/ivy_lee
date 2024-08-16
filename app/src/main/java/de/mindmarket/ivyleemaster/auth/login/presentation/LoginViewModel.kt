@@ -42,6 +42,8 @@ class LoginViewModel(
     }
 
     private fun loginUser() {
+        state.username.setTextAndSelectAll("michaelwidlok@yahoo.de") // TODO remove later, just for internal test
+        state.password.setTextAndSelectAll("mepfde22")
         viewModelScope.launch {
             if (state.username.text.isBlank() || state.password.text.isBlank()) {
                 eventChannel.send(LoginEvent.OnLoginFailed(UiText.StringResource(R.string.login_credentials_empty)))
