@@ -11,5 +11,7 @@ fun DataError.asUiText():UiText {
         DataError.Network.UNAUTHORIZED -> UiText.StringResource(R.string.error_unauthorized)
         DataError.Network.REQUEST_TIMEOUT -> UiText.StringResource(R.string.error_request_timeout)
         DataError.Network.NO_INTERNET -> UiText.StringResource(R.string.error_no_internet)
+        DataError.Authentication.USER_DATA_EMPTY -> UiText.StringResource(R.string.error_authentication_empty_credentials)
+        DataError.Authentication.UNAUTHORIZED -> UiText.StringResource(R.string.error_authentication_wrong_credentials)
     }
 }

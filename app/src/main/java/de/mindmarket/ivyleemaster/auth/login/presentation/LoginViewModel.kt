@@ -3,7 +3,6 @@
 package de.mindmarket.ivyleemaster.auth.login.presentation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.foundation.text2.input.setTextAndSelectAll
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +11,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
+import de.mindmarket.ivyleemaster.util.domain.DataError
+import de.mindmarket.ivyleemaster.util.domain.Result
 import de.mindmarket.ivyleemaster.util.presentation.UiText
+import de.mindmarket.ivyleemaster.util.presentation.asUiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -25,7 +27,6 @@ class LoginViewModel(
 
     private val eventChannel = Channel<LoginEvent>()
     val events = eventChannel.receiveAsFlow()
-
 
     fun onAction(action: LoginAction) {
         when (action) {
@@ -42,27 +43,26 @@ class LoginViewModel(
     }
 
     private fun loginUser() {
-        state.username.setTextAndSelectAll("michaelwidlok@yahoo.de") // TODO remove later, just for internal test
-        state.password.setTextAndSelectAll("mepfde22")
         viewModelScope.launch {
-            if (state.username.text.isBlank() || state.password.text.isBlank()) {
-                eventChannel.send(LoginEvent.OnLoginFailed(UiText.StringResource(R.string.login_credentials_empty)))
-                return@launch
-            }
-
             state = state.copy(isLoggingIn = true)
+
             val result = repository.loginUser(
                 state.username.text.toString().trim(),
                 state.password.text.toString()
             )
-            if (result.id.isBlank()) {
-                eventChannel.send(
-                    LoginEvent.OnLoginFailed(UiText.StringResource(R.string.login_failed))
-                )
-            } else {
-                eventChannel.send(
-                    LoginEvent.OnLoginSuccess
-                )
+
+            when (result) {
+                is Result.Error -> {
+                    eventChannel.send(
+                        LoginEvent.OnLoginFailed(result.error.asUiText())
+                    )
+                }
+
+                is Result.Success -> {
+                    eventChannel.send(
+                        LoginEvent.OnLoginSuccess
+                    )
+                }
             }
         }
     }

@@ -36,4 +36,9 @@
     <string name="add_idea_primary_button_text">Add new idea</string>
     <string name="add_idea_switch_high_priority_text">High priority</string>
     <string name="add_idea_switch_repeatable_text">Repeatable</string>
+    <string name="add_idea_successul_message">Your idea was successfully added!</string>
+    <string name="add_idea_validation_failed">Idea validation failed. Check your input!</string>
+    <string name="error_authentication_empty_credentials">Email and password must not be empty. Please try again.</string>
+    <string name="error_authentication_wrong_credentials">Your credentials are wrong. Please try again.</string>
+
 </resources>

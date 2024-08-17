@@ -9,17 +9,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import de.mindmarket.ivyleemaster.core.domain.model.Genre
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
-import de.mindmarket.ivyleemaster.core.domain.model.Status
-import de.mindmarket.ivyleemaster.task.data.IvyTaskRepository
+import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class TaskViewModel(
-    private val taskRepository: IvyTaskRepository
+    private val repository: IdeaRepository
 ) : ViewModel() {
     var state by mutableStateOf(TaskState())
         private set
@@ -29,7 +27,7 @@ class TaskViewModel(
 
     init {
         viewModelScope.launch {
-            taskRepository.addIdea(
+            repository.addIdea(
                 Idea(
                     id = "123",
                     userId = "245",
