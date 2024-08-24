@@ -106,17 +106,21 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(16.dp))
             IvyInputTextField(
                 state = state.email,
-                label = stringResource(R.string.your_email)
+                hint = stringResource(R.string.your_email)
             )
             Spacer(modifier = Modifier.height(16.dp))
             IvyPasswordTextField(
                 state = state.password,
-                label = stringResource(R.string.your_password)
+                onTogglePasswordVisibility = {
+                    onAction(RegisterAction.OnTogglePasswordVisibilityClick)
+                },
+                isPasswordVisible = state.isPasswordVisible,
+                hint = stringResource(R.string.your_password)
             )
             Spacer(modifier = Modifier.height(16.dp))
             IvyInputTextField(
                 state = state.repeatPassword,
-                label = stringResource(R.string.repeat_password)
+                hint = stringResource(R.string.repeat_password)
             )
             Spacer(modifier = Modifier.height(28.dp))
             Row(

@@ -2,8 +2,13 @@
 
 package de.mindmarket.ivyleemaster.core.domain.model
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text2.input.TextFieldState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.ui.graphics.vector.ImageVector
+import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.auth.data.UserId
 
 typealias IdeaId = String
@@ -13,7 +18,7 @@ data class Idea(
     val userId: UserId,
     val title: TextFieldState = TextFieldState(),
     val subtitle: TextFieldState = TextFieldState(),
-    val genre: Genre = Genre.UNDEFINED,
+    val genre: Genre = Genre.EMPTY,
     val mainTopic: IdeaId? = null,
     val isUrgent: Boolean = false,
     val isRepeatable: Boolean = false,
@@ -29,14 +34,13 @@ data class Idea(
     }
 }
 
-
-enum class Genre {
-    PERSONAL_DEVELOPMENT,
-    BUSINESS,
-    FITNESS,
-    RELATIONSHIP,
-    FINANCE,
-    UNDEFINED
+data class Genre(
+    @StringRes val title: Int,
+    val icon: ImageVector
+) {
+    companion object {
+        val EMPTY = Genre(R.string.genre_title_undefined, Icons.Filled.Warning)
+    }
 }
 
 enum class Type {

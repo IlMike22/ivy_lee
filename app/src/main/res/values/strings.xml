@@ -40,5 +40,16 @@
     <string name="add_idea_validation_failed">Idea validation failed. Check your input!</string>
     <string name="error_authentication_empty_credentials">Email and password must not be empty. Please try again.</string>
     <string name="error_authentication_wrong_credentials">Your credentials are wrong. Please try again.</string>
+    <string name="show_password">Show password</string>
+    <string name="hide_password">Hide password</string>
+    <string name="genre_title_relationship">Relationship</string>
+    <string name="genre_title_business">Business</string>
+    <string name="genre_title_finance">Finance</string>
+    <string name="genre_title_fittness">Fittness</string>
+    <string name="genre_title_socialising">Socialising</string>
+    <string name="genre_title_education">Education</string>
+    <string name="genre_title_undefined">Not defined</string>
+
+
 
 </resources>

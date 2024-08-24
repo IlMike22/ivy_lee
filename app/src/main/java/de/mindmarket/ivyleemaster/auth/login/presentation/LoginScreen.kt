@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class)
 
 package de.mindmarket.ivyleemaster.auth.login.presentation
 
@@ -97,7 +97,7 @@ private fun LoginScreen(
 ) {
     GradientBackground {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .padding(start = 16.dp, end = 16.dp)
                 .fillMaxSize()
         ) {
@@ -115,12 +115,17 @@ private fun LoginScreen(
             Spacer(Modifier.height(16.dp))
             IvyInputTextField(
                 state = state.username,
-                label = stringResource(R.string.type_user_name)
+                title = stringResource(R.string.type_user_name),
+                hint = stringResource(R.string.type_user_name)
             )
             Spacer(modifier = Modifier.height(16.dp))
             IvyPasswordTextField(
                 state = state.password,
-                label = stringResource(R.string.your_password)
+                isPasswordVisible = state.isPasswordVisible,
+                onTogglePasswordVisibility = {
+                    onAction(LoginAction.OnTogglePasswordVisibility)
+                },
+                hint = stringResource(R.string.your_password),
             )
             Spacer(Modifier.height(16.dp))
 

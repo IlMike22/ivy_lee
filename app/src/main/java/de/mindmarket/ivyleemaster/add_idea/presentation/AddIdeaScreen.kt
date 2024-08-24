@@ -1,14 +1,17 @@
 @file:OptIn(
     ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
-    ExperimentalFoundationApi::class
+    ExperimentalFoundationApi::class, ExperimentalFoundationApi::class
 )
 
 package de.mindmarket.ivyleemaster.add_idea.presentation
 
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -18,6 +21,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Call
@@ -172,12 +180,12 @@ fun AddIdeaScreen(
                     Spacer(Modifier.height(16.dp))
                     IvyInputTextField(
                         state = state.newIdea.title,
-                        label = stringResource(R.string.add_idea_hint_text_title)
+                        hint = stringResource(R.string.add_idea_hint_text_title)
                     )
                     Spacer(Modifier.height(16.dp))
                     IvyInputTextField(
                         state = state.newIdea.subtitle,
-                        label = stringResource(R.string.add_idea_hint_text_subtitle)
+                        hint = stringResource(R.string.add_idea_hint_text_subtitle)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     IvySwitch(
@@ -190,23 +198,20 @@ fun AddIdeaScreen(
                         label = stringResource(R.string.add_idea_switch_repeatable_text)
                     )
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth()
+                    LazyHorizontalStaggeredGrid(
+                        rows = StaggeredGridCells.Fixed(12),
+                        contentPadding = PaddingValues(4.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        modifier = modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.onPrimary),
                     ) {
-                        IvyChip(
-                            label = "Life",
-                            icon = Icons.Filled.ShoppingCart,
-                            onClick = { state.newIdea.copy(genre = Genre.RELATIONSHIP)})
-                        Spacer(modifier = Modifier.width(16.dp))
-                        IvyChip(
-                            label = "Business",
-                            icon = Icons.Filled.AccountBox,
-                            onClick = { /*TODO*/ })
-                        Spacer(modifier = Modifier.width(16.dp))
-                        IvyChip(
-                            label = "Health",
-                            icon = Icons.Filled.Call,
-                            onClick = { /*TODO*/ })
+                        items(state.genres) { genre ->
+                            IvyChip(
+                                label = stringResource(id = genre.title),
+                                icon = genre.icon,
+                                onClick = { onAction(IdeaAction.OnGenreClick(genre)) }
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                        }
                     }
                     Column(
                         modifier = Modifier.fillMaxHeight(),

@@ -15,6 +15,7 @@ import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class TaskViewModel(
     private val repository: IdeaRepository
@@ -29,11 +30,11 @@ class TaskViewModel(
         viewModelScope.launch {
             repository.addIdea(
                 Idea(
-                    id = "123",
-                    userId = "245",
+                    id = UUID.randomUUID().toString(),
+                    userId = UUID.randomUUID().toString(),
                     title = TextFieldState("my first idea"),
                     subtitle = TextFieldState("subtitle from idea"),
-                    genre = Genre.RELATIONSHIP,
+                    genre = Genre.EMPTY,
                     isRepeatable = true
                 )
             )

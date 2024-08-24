@@ -25,6 +25,10 @@ val Settings: ImageVector
     @Composable
     get() = ImageVector.vectorResource(id = R.drawable.settings)
 
+val Lock: ImageVector
+@Composable
+get() = ImageVector.vectorResource(id = R.drawable.lock)
+
 val Add: ImageVector
 @Composable
 get() = ImageVector.vectorResource(id = R.drawable.add_task)
