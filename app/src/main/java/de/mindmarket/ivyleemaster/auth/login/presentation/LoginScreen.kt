@@ -65,14 +65,16 @@ fun LoginScreenRoot(
                                 Toast.LENGTH_LONG
                             ).show()
                         }
-                        LoginEvent.OnLoginSuccess -> {
-                            keyboardController?.hide()
-                            Toast.makeText(
-                                context,
-                                context.getString(
-                                    R.string.login_success_message
-                                ), Toast.LENGTH_LONG
-                            ).show()
+                        is LoginEvent.OnLoginSuccess -> {
+                            if (event.showSnackbar) {
+                                keyboardController?.hide()
+                                Toast.makeText(
+                                    context,
+                                    context.getString(
+                                        R.string.login_success_message
+                                    ), Toast.LENGTH_LONG
+                                ).show()
+                            }
                             onLoginSuccess()
                         }
                     }

@@ -28,6 +28,16 @@ class LoginViewModel(
     private val eventChannel = Channel<LoginEvent>()
     val events = eventChannel.receiveAsFlow()
 
+    init {
+        viewModelScope.launch {
+            if (repository.checkIfUserIsAuthenticated()) {
+                eventChannel.send(
+                    LoginEvent.OnLoginSuccess(false)
+                )
+            }
+        }
+    }
+
     fun onAction(action: LoginAction) {
         when (action) {
             is LoginAction.OnLoginClick -> loginUser()
@@ -43,6 +53,8 @@ class LoginViewModel(
     }
 
     private fun loginUser() {
+        state.username.setTextAndSelectAll("michaelwidlok@yahoo.de") // TODO remove later, just for internal test
+        state.password.setTextAndSelectAll("mepfde22")
         viewModelScope.launch {
             state = state.copy(isLoggingIn = true)
 
@@ -60,7 +72,7 @@ class LoginViewModel(
 
                 is Result.Success -> {
                     eventChannel.send(
-                        LoginEvent.OnLoginSuccess
+                        LoginEvent.OnLoginSuccess(true)
                     )
                 }
             }

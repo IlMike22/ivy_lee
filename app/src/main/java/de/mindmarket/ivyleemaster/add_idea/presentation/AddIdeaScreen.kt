@@ -1,18 +1,16 @@
 @file:OptIn(
     ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
-    ExperimentalFoundationApi::class, ExperimentalFoundationApi::class
+    ExperimentalFoundationApi::class, ExperimentalFoundationApi::class, ExperimentalLayoutApi::class
 )
 
 package de.mindmarket.ivyleemaster.add_idea.presentation
 
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.ScrollableDefaults
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,15 +19,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -50,8 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import de.mindmarket.ivyleemaster.R
-import de.mindmarket.ivyleemaster.auth.login.presentation.LoginEvent
-import de.mindmarket.ivyleemaster.core.domain.model.Genre
 import de.mindmarket.ivyleemaster.core.presentation.GradientBackground
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyChip
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyInputTextField
@@ -89,6 +76,7 @@ fun AddIdeaScreenRoot(
                                 Toast.LENGTH_LONG
                             ).show()
                         }
+
                         is AddIdeaEvent.OnAddIdeaSuccess -> {
                             keyboardController?.hide()
                             Toast.makeText(
@@ -198,21 +186,21 @@ fun AddIdeaScreen(
                         label = stringResource(R.string.add_idea_switch_repeatable_text)
                     )
 
-                    LazyHorizontalStaggeredGrid(
-                        rows = StaggeredGridCells.Fixed(12),
-                        contentPadding = PaddingValues(4.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                        modifier = modifier.fillMaxWidth().background(color = MaterialTheme.colorScheme.onPrimary),
+                    FlowRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(8.dp)
                     ) {
-                        items(state.genres) { genre ->
+                        state.genres.forEach { genre ->
                             IvyChip(
                                 label = stringResource(id = genre.title),
                                 icon = genre.icon,
                                 onClick = { onAction(IdeaAction.OnGenreClick(genre)) }
                             )
-                            Spacer(modifier = Modifier.width(16.dp))
+                            Spacer(modifier = Modifier.width(8.dp))
                         }
                     }
+
                     Column(
                         modifier = Modifier.fillMaxHeight(),
                         verticalArrangement = Arrangement.Bottom
