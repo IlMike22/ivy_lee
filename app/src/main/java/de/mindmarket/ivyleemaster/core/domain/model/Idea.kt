@@ -6,6 +6,11 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.ui.graphics.vector.ImageVector
 import de.mindmarket.ivyleemaster.R
@@ -18,7 +23,7 @@ data class Idea(
     val userId: UserId,
     val title: TextFieldState = TextFieldState(),
     val subtitle: TextFieldState = TextFieldState(),
-    val genre: Genre = Genre.EMPTY,
+    val genre: Genre? = null,
     val mainTopic: IdeaId? = null,
     val isUrgent: Boolean = false,
     val isRepeatable: Boolean = false,
@@ -36,11 +41,26 @@ data class Idea(
 
 data class Genre(
     @StringRes val title: Int,
-    val icon: ImageVector
+    val icon: ImageVector,
+    val id: GenreId
 ) {
-    companion object {
-        val EMPTY = Genre(R.string.genre_title_undefined, Icons.Filled.Warning)
-    }
+//    companion object {
+//        val EMPTY = Genre(R.string.genre_title_undefined, Icons.Filled.Warning)
+//        val RELATIONSHIP = Genre(R.string.genre_title_relationship, Icons.Filled.Favorite)
+//        val BUSINESS = Genre(R.string.genre_title_business, Icons.Filled.Build)
+//        val FITTNESS = Genre(R.string.genre_title_fittness, Icons.Filled.ThumbUp)
+//        val SOCIALISING = Genre(R.string.genre_title_socialising, Icons.Filled.Face)
+//        val FINANCE = Genre(R.string.genre_title_business, Icons.Filled.ShoppingCart)
+//    }
+}
+
+enum class GenreId {
+    RELATIONSHIP,
+    FITTNESS,
+    FINANCE,
+    SOCIALISING,
+    BUSINESS,
+    UNDEFINED
 }
 
 enum class Type {

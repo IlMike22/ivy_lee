@@ -1,13 +1,16 @@
 package de.mindmarket.ivyleemaster.add_idea.presentation
 
+import androidx.annotation.StringRes
+import de.mindmarket.ivyleemaster.R
+
 sealed interface AddIdeaEvent {
-    data class OnValidationFailed(val validation: ValidationState):AddIdeaEvent
-    data object OnAddIdeaFailed: AddIdeaEvent
-    data object OnAddIdeaSuccess: AddIdeaEvent
+    data class OnValidationFailed(val validation: ValidationState) : AddIdeaEvent
+    data object OnAddIdeaFailed : AddIdeaEvent
+    data class OnShowSnackbar(@StringRes val title: Int) : AddIdeaEvent
 }
 
-enum class ValidationState(val text:String) {
-    TITLE_MISSING("The title is missing."),
-    NO_GENRE("You did not define a genre."),
-    SUCCESS("Your idea was successfully added.")
+sealed class ValidationState(@StringRes val textId: Int) {
+    data object Success : ValidationState(R.string.add_idea_validation_success)
+    data object TitleMissing : ValidationState(R.string.add_idea_validation_title_missing)
+    data object NoGenre : ValidationState(R.string.add_idea_validation_genre_missing)
 }

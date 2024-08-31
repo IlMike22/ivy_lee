@@ -6,10 +6,9 @@ data class IdeaState(
     val ideas: List<Idea> = emptyList()
 )
 
-
 data class Idea(
     val id:String,
     val title:String,
     val subtitle:String,
-    val genre: Genre = Genre.EMPTY
+    val genre: Genre?
 )

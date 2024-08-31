@@ -33,4 +33,8 @@ class AuthRemoteDataSource(
     suspend fun checkIfUserIsAuthenticated() = suspendCoroutine { continuation ->
         continuation.resume(auth.currentUser != null)
     }
+
+    suspend fun getUserId() = suspendCoroutine {  continuation ->
+        continuation.resume(auth.currentUser?.uid)
+    }
 }

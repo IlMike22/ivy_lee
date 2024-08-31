@@ -26,23 +26,7 @@ class TaskViewModel(
     private val eventChannel = Channel<TaskEvent>()
     val events = eventChannel.receiveAsFlow()
 
-    init {
-        viewModelScope.launch {
-            repository.addIdea(
-                Idea(
-                    id = UUID.randomUUID().toString(),
-                    userId = UUID.randomUUID().toString(),
-                    title = TextFieldState("my first idea"),
-                    subtitle = TextFieldState("subtitle from idea"),
-                    genre = Genre.EMPTY,
-                    isRepeatable = true
-                )
-            )
-        }
-    }
-
     fun onAction(action: TaskAction) {
-
     }
 
 }

@@ -49,7 +49,9 @@
     <string name="genre_title_socialising">Socialising</string>
     <string name="genre_title_education">Education</string>
     <string name="genre_title_undefined">Not defined</string>
-
+    <string name="add_idea_validation_success">Your idea was successfully created</string>
+    <string name="add_idea_validation_title_missing">You need to define a title</string>
+    <string name="add_idea_validation_genre_missing">You need to define a genre</string>
 
 
 </resources>

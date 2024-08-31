@@ -12,5 +12,7 @@ interface AuthRepository {
 
     suspend fun registerUser(email: String, password: String): Throwable?
 
-    suspend fun checkIfUserIsAuthenticated():Boolean
+    suspend fun checkIfUserIsAuthenticated(): Boolean
+
+    suspend fun getUserId(): String?
 }

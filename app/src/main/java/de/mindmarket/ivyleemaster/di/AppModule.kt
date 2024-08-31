@@ -46,6 +46,4 @@ val appModule = module {
 
     // Settings
     viewModelOf(::SettingsViewModel)
-
-
 }

@@ -19,6 +19,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +34,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -39,6 +47,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import de.mindmarket.ivyleemaster.R
+import de.mindmarket.ivyleemaster.core.domain.model.Genre
+import de.mindmarket.ivyleemaster.core.domain.model.GenreId
 import de.mindmarket.ivyleemaster.core.presentation.GradientBackground
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyChip
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyInputTextField
@@ -61,6 +71,7 @@ fun AddIdeaScreenRoot(
 ) {
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
+    val state by viewModel.state.collectAsState()
 
     val lifeCycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(viewModel.events, lifeCycleOwner.lifecycle) {
@@ -77,12 +88,12 @@ fun AddIdeaScreenRoot(
                             ).show()
                         }
 
-                        is AddIdeaEvent.OnAddIdeaSuccess -> {
+                        is AddIdeaEvent.OnShowSnackbar -> {
                             keyboardController?.hide()
                             Toast.makeText(
                                 context,
                                 context.getString(
-                                    R.string.add_idea_successul_message
+                                    event.title
                                 ), Toast.LENGTH_LONG
                             ).show()
                         }
@@ -103,7 +114,7 @@ fun AddIdeaScreenRoot(
     }
 
     AddIdeaScreen(
-        state = viewModel.state,
+        state = state,
         onAction = viewModel::onAction,
         onBackClick = onBackClick
     )
@@ -167,22 +178,22 @@ fun AddIdeaScreen(
                     )
                     Spacer(Modifier.height(16.dp))
                     IvyInputTextField(
-                        state = state.newIdea.title,
+                        state = state.title,
                         hint = stringResource(R.string.add_idea_hint_text_title)
                     )
                     Spacer(Modifier.height(16.dp))
                     IvyInputTextField(
-                        state = state.newIdea.subtitle,
+                        state = state.subTitle,
                         hint = stringResource(R.string.add_idea_hint_text_subtitle)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     IvySwitch(
-                        onCheckChange = { state.newIdea.isUrgent },
+                        onCheckChange = { state.isUrgent },
                         label = stringResource(R.string.add_idea_switch_high_priority_text)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     IvySwitch(
-                        onCheckChange = { state.newIdea.isRepeatable },
+                        onCheckChange = { state.isRepeatable },
                         label = stringResource(R.string.add_idea_switch_repeatable_text)
                     )
 
@@ -191,7 +202,7 @@ fun AddIdeaScreen(
                             .fillMaxWidth()
                             .padding(8.dp)
                     ) {
-                        state.genres.forEach { genre ->
+                        createGenreList().forEach { genre ->
                             IvyChip(
                                 label = stringResource(id = genre.title),
                                 icon = genre.icon,
@@ -220,8 +231,16 @@ fun AddIdeaScreen(
             }
         )
     }
-
 }
+
+private fun createGenreList() =
+    listOf(
+        Genre(title = R.string.genre_title_relationship, Icons.Filled.ThumbUp, GenreId.RELATIONSHIP),
+        Genre(title = R.string.genre_title_business, Icons.Filled.PlayArrow, GenreId.BUSINESS),
+        Genre(title = R.string.genre_title_fittness, Icons.Filled.Place, GenreId.FITTNESS),
+        Genre(title = R.string.genre_title_socialising, Icons.Filled.Star, GenreId.SOCIALISING),
+        Genre(title = R.string.genre_title_finance, Icons.Filled.Face, GenreId.FINANCE)
+    )
 
 @Preview
 @Composable

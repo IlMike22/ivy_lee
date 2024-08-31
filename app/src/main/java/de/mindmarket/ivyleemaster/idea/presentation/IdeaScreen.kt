@@ -43,15 +43,15 @@ fun IdeaScreen(
                     icon = Icons.Filled.Add,
                     onClick = {
                         onAddIdeaClick()
-                    },
-                    modifier = Modifier.padding(bottom = 80.dp)
+                    }
                 )
             }
         ) { padding ->
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
                     .padding(padding)
+                    .fillMaxSize()
+
             ) {
                 Text(
                     text = "Hello Idea Screen!",
