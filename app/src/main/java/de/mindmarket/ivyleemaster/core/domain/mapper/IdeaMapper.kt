@@ -3,7 +3,7 @@
 package de.mindmarket.ivyleemaster.core.domain.mapper
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.TextFieldState
+import androidx.compose.foundation.text.input.TextFieldState
 import de.mindmarket.ivyleemaster.core.data.model.Status
 import de.mindmarket.ivyleemaster.core.domain.model.Genre
 import de.mindmarket.ivyleemaster.core.domain.model.GenreId
@@ -13,6 +13,7 @@ import de.mindmarket.ivyleemaster.core.domain.model.Idea
 typealias IdeaData = de.mindmarket.ivyleemaster.core.data.model.Idea
 typealias GenreData = de.mindmarket.ivyleemaster.core.data.model.Genre
 
+@OptIn(ExperimentalFoundationApi::class)
 fun Idea.toIdeaData() =
     IdeaData(
         id = this.id,

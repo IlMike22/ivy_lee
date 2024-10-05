@@ -11,44 +11,62 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import de.mindmarket.ivyleemaster.add_idea.presentation.AddIdeaScreenRoot
 import de.mindmarket.ivyleemaster.auth.login.presentation.LoginScreenRoot
 import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterScreenRoot
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyBottomAppBar
+import de.mindmarket.ivyleemaster.core.presentation.navigator.Destination
+import de.mindmarket.ivyleemaster.core.presentation.navigator.NavigationAction
+import de.mindmarket.ivyleemaster.core.presentation.navigator.Navigator
+import de.mindmarket.ivyleemaster.core.presentation.util.ObserveAsEvents
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaScreenRoot
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaViewModel
 import de.mindmarket.ivyleemaster.settings.SettingsScreenRoot
 import de.mindmarket.ivyleemaster.task.presentation.TaskScreenRoot
 import de.mindmarket.ivyleemaster.util.presentation.Route
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @Composable
-fun NavigationRoot(
-    navController: NavHostController
-) {
+fun NavigationRoot() {
+    val navController = rememberNavController()
+    val navigator = koinInject<Navigator>()
+
+    ObserveAsEvents(flow = navigator.navigationActions) { action ->
+        when (action) {
+            is NavigationAction.Navigate ->
+                navController.navigate(
+                    action.destination
+                ) {
+                    action.navOptions(this)
+                }
+
+            NavigationAction.NavigateUp -> navController.navigateUp()
+        }
+    }
+
     Scaffold(
         bottomBar = {
-                IvyBottomAppBar(
-                    screens = listOf(
-                        Screen.Task,
-                        Screen.Idea,
-                        Screen.Settings
-                    ),
-                    navController = navController
-                )
+            IvyBottomAppBar(
+                screens = listOf(
+                    Screen.Task,
+                    Screen.Idea,
+                    Screen.Settings
+                ),
+                navController = navController
+            )
 
         }
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = Route.AUTH,
+            startDestination = navigator.startDestination,
             modifier = Modifier.padding(padding)
         ) {
             authGraph(navController)
@@ -58,19 +76,12 @@ fun NavigationRoot(
 }
 
 private fun NavGraphBuilder.authGraph(navController: NavController) {
-    navigation(
-        route = Route.AUTH,
-        startDestination = Route.LOGIN
+    navigation<Destination.AuthGraph>(
+        startDestination = Destination.Login
     ) {
-        composable(route = Route.LOGIN) {
+        composable<Destination.Login> {
             LoginScreenRoot(
-                onLoginSuccess = {
-                    navController.navigate(Route.TASK) {
-                        popUpTo(Route.LOGIN) {
-                            inclusive = true
-                        }
-                    }
-                },
+                onLoginSuccess = {},
                 onRegisterClick = {
                     navController.navigate(Route.REGISTER) {
                         popUpTo(Route.LOGIN) {
@@ -83,7 +94,7 @@ private fun NavGraphBuilder.authGraph(navController: NavController) {
             )
         }
 
-        composable(route = Route.REGISTER) {
+        composable<Destination.Register> {
             RegisterScreenRoot(
                 onNavigateToLoginClick = {
                     navController.navigate(Route.LOGIN) {
@@ -100,28 +111,25 @@ private fun NavGraphBuilder.authGraph(navController: NavController) {
 }
 
 private fun NavGraphBuilder.mainGraph(navController: NavController) {
-    navigation(
-        route = "main",
-        startDestination = Route.TASK
+    navigation<Destination.HomeGraph>(
+        startDestination = Destination.Task
     ) {
-        composable(route = Route.TASK) {
+        composable<Destination.Task> {
             TaskScreenRoot()
         }
-        composable(route = Route.IDEA) {
+        composable<Destination.Idea> {
             val viewModel = koinViewModel<IdeaViewModel>()
             val state by viewModel.state.collectAsState()
             IdeaScreenRoot(
                 state = state,
                 onAction = viewModel::onAction,
-                onAddIdeaClick = {
-                    navController.navigate(Route.ADD_IDEA)
-                }
+                onAddIdeaClick = {}
             )
         }
-        composable(route = Route.SETTINGS) {
+        composable<Destination.Settings> {
             SettingsScreenRoot()
         }
-        composable(route = Route.ADD_IDEA) {
+        composable<Destination.AddIdea> {
             AddIdeaScreenRoot(
                 onBackClick = {
                     navController.popBackStack()
@@ -131,11 +139,11 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
     }
 }
 
-sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
-    data object Task : Screen(route = Route.TASK, label = "Home", icon = Icons.Default.Home)
+sealed class Screen(val destination: Destination, val label: String, val icon: ImageVector) {
+    data object Task : Screen(destination = Destination.Task, label = "Home", icon = Icons.Default.Home)
     data object Idea :
-        Screen(route = Route.IDEA, label = "Idea Pool", icon = Icons.Default.ShoppingCart)
+        Screen(destination = Destination.Idea, label = "Idea Pool", icon = Icons.Default.ShoppingCart)
 
     data object Settings :
-        Screen(route = Route.SETTINGS, label = "Settings", icon = Icons.Default.Settings)
+        Screen(destination = Destination.Settings, label = "Settings", icon = Icons.Default.Settings)
 }

@@ -50,7 +50,7 @@ fun IdeaScreen(
                 IvyFloatingActionButton(
                     icon = Icons.Filled.Add,
                     onClick = {
-                        onAddIdeaClick()
+                        onAction(IdeaAction.OnAddIdeaClick)
                     }
                 )
             }

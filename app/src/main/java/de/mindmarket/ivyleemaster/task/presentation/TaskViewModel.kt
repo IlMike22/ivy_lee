@@ -7,11 +7,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import de.mindmarket.ivyleemaster.core.presentation.navigator.Navigator
 import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 
 class TaskViewModel(
+    private val navigator: Navigator,
     private val repository: IdeaRepository
 ) : ViewModel() {
     var state by mutableStateOf(TaskState())

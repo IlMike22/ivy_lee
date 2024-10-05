@@ -8,6 +8,9 @@ import de.mindmarket.ivyleemaster.auth.data.UserAuthRepository
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
 import de.mindmarket.ivyleemaster.auth.login.presentation.LoginViewModel
 import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterViewModel
+import de.mindmarket.ivyleemaster.core.presentation.navigator.DefaultNavigator
+import de.mindmarket.ivyleemaster.core.presentation.navigator.Destination
+import de.mindmarket.ivyleemaster.core.presentation.navigator.Navigator
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaViewModel
 import de.mindmarket.ivyleemaster.settings.SettingsViewModel
 import de.mindmarket.ivyleemaster.task.data.IvyTaskRemoteDataSource
@@ -24,6 +27,11 @@ import org.koin.dsl.module
 val appModule = module {
     single<CoroutineScope> {
         (androidApplication() as IvyLeeMasterApp).applicationScope
+    }
+
+    // Navigation
+    single<Navigator> {
+        DefaultNavigator(startDestination = Destination.AuthGraph)
     }
 
     // Auth

@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import de.mindmarket.ivyleemaster.Screen
+import de.mindmarket.ivyleemaster.core.presentation.navigator.Destination
 import de.mindmarket.ivyleemaster.util.presentation.Route
 
 @Composable
@@ -33,10 +34,10 @@ fun IvyBottomAppBar(
             actions = {
                 screens.forEach { screen ->
                     NavigationBarItem(
-                        selected = currentRoute == screen.route,
+                        selected = currentRoute == screen.destination,
                         onClick = {
-                            if (currentRoute != screen.route) {
-                                navController.navigate(screen.route) {
+                            if (currentRoute != screen.destination) {
+                                navController.navigate(screen.destination) {
                                     launchSingleTop = true
                                     restoreState = true
                                     popUpTo(navController.graph.startDestinationId) {

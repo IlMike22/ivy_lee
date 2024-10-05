@@ -5,12 +5,12 @@ import de.mindmarket.ivyleemaster.auth.data.UserId
 typealias IdeaId = String
 
 data class Idea(
-    val id: IdeaId,
-    val userId: UserId,
-    val title: String,
+    val id: IdeaId = "0",
+    val userId: UserId = "0",
+    val title: String = "",
     val subtitle: String = "",
     val genre: Genre = Genre.UNDEFINED,
-    val mainTopic: IdeaId? = null,
+    val mainTopic: String? = null,
     val isUrgent: Boolean = false,
     val isRepeatable: Boolean = false,
     val status: Status = Status.OPEN,

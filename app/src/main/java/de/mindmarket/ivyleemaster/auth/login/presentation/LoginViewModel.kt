@@ -3,23 +3,22 @@
 package de.mindmarket.ivyleemaster.auth.login.presentation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.setTextAndSelectAll
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
-import de.mindmarket.ivyleemaster.util.domain.DataError
+import de.mindmarket.ivyleemaster.core.presentation.navigator.Destination
+import de.mindmarket.ivyleemaster.core.presentation.navigator.Navigator
 import de.mindmarket.ivyleemaster.util.domain.Result
-import de.mindmarket.ivyleemaster.util.presentation.UiText
 import de.mindmarket.ivyleemaster.util.presentation.asUiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
+    private val navigator: Navigator,
     private val repository: AuthRepository
 ) : ViewModel() {
     var state by mutableStateOf(LoginState())
@@ -41,7 +40,11 @@ class LoginViewModel(
     fun onAction(action: LoginAction) {
         when (action) {
             is LoginAction.OnLoginClick -> loginUser()
-            LoginAction.OnRegisterClick -> Unit
+            LoginAction.OnRegisterClick -> {
+                viewModelScope.launch {
+                    navigator.navigate(Destination.Register)
+                }
+            }
             LoginAction.OnTogglePasswordVisibility -> {
                 state = state.copy(
                     isPasswordVisible = !state.isPasswordVisible
@@ -72,6 +75,11 @@ class LoginViewModel(
                     eventChannel.send(
                         LoginEvent.OnLoginSuccess(true)
                     )
+                    navigator.navigate(Destination.Task) {
+                        popUpTo(Destination.AuthGraph) {
+                            inclusive = true
+                        }
+                    }
                 }
             }
         }

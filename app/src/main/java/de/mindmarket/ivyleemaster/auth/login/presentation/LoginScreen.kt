@@ -152,7 +152,7 @@ private fun LoginScreen(
                         .weight(1f),
                     text = stringResource(R.string.register),
                     onClick = {
-                        onRegisterClick()
+                        onAction(LoginAction.OnRegisterClick)
                     }
                 )
             }

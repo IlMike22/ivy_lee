@@ -11,8 +11,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import de.mindmarket.ivyleemaster.core.presentation.navigator.Navigator
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
 import de.mindmarket.ivyleemaster.util.presentation.Route
+import org.koin.compose.koinInject
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -26,10 +28,7 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
-                    NavigationRoot(
-                        navController
-                    )
+                    NavigationRoot()
                 }
             }
         }

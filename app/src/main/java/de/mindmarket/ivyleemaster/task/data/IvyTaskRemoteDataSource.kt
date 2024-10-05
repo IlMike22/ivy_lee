@@ -5,8 +5,6 @@ import de.mindmarket.ivyleemaster.core.data.model.Idea
 import de.mindmarket.ivyleemaster.util.domain.DataError
 import de.mindmarket.ivyleemaster.util.domain.EmptyResult
 import de.mindmarket.ivyleemaster.util.domain.Result
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -20,7 +18,17 @@ class IvyTaskRemoteDataSource(
                 .child(userId)
                 .get()
                 .addOnSuccessListener { values ->
-                    continuation.resume(Result.Success( listOf(Idea.EMPTY) ))
+                    val ideas = mutableListOf<Idea>()
+                    for (singleDataSet in values.children) {
+                        singleDataSet.getValue(Idea::class.java)?.apply {
+                            ideas.add(this)
+                        }
+                    }
+                    continuation.resume(
+                        Result.Success(
+                            ideas
+                        )
+                    )
                 }
                 .addOnFailureListener {
                     continuation.resume(Result.Error(DataError.Network.SERVER_ERROR))

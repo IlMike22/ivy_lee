@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
 import de.mindmarket.ivyleemaster.core.domain.mapper.toIdeaDomain
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
+import de.mindmarket.ivyleemaster.core.presentation.navigator.Destination
+import de.mindmarket.ivyleemaster.core.presentation.navigator.Navigator
 import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
 import de.mindmarket.ivyleemaster.util.domain.Result
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,6 +15,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class IdeaViewModel(
+    private val navigator: Navigator,
     private val repository: IdeaRepository,
     private val authRepository: AuthRepository
 ) : ViewModel() {
@@ -45,6 +48,11 @@ class IdeaViewModel(
 
     fun onAction(action: IdeaAction) {
         when (action) {
+            IdeaAction.OnAddIdeaClick -> {
+                viewModelScope.launch {
+                    navigator.navigate(Destination.AddIdea)
+                }
+            }
             else -> {}
         }
     }
