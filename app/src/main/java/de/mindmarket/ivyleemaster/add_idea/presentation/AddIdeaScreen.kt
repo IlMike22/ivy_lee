@@ -205,8 +205,9 @@ fun AddIdeaScreen(
                         createGenreList().forEach { genre ->
                             IvyChip(
                                 label = stringResource(id = genre.title),
+                                isSelected = state.genre == genre,
                                 icon = genre.icon,
-                                onClick = { onAction(IdeaAction.OnGenreClick(genre)) }
+                                onClick = { onAction(IdeaAction.OnGenreClick(genre)) },
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                         }

@@ -3,19 +3,13 @@
 package de.mindmarket.ivyleemaster.task.presentation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.TextFieldState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import de.mindmarket.ivyleemaster.core.domain.model.Genre
-import de.mindmarket.ivyleemaster.core.domain.model.Idea
 import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
-import kotlinx.coroutines.launch
-import java.util.UUID
 
 class TaskViewModel(
     private val repository: IdeaRepository

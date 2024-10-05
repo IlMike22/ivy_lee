@@ -6,10 +6,16 @@ import de.mindmarket.ivyleemaster.core.domain.model.IdeaId
 import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
 import de.mindmarket.ivyleemaster.util.domain.DataError
 import de.mindmarket.ivyleemaster.util.domain.EmptyResult
+import de.mindmarket.ivyleemaster.util.domain.Result
+import kotlinx.coroutines.flow.Flow
 
 class IvyTaskRepository(
     private val remoteDataSource: IvyTaskRemoteDataSource
-):IdeaRepository {
+) : IdeaRepository {
+    override suspend fun getIdeas(userId: String): Result<List<de.mindmarket.ivyleemaster.core.data.model.Idea>, DataError.Network> {
+        return remoteDataSource.getIdeas(userId)
+    }
+
     override suspend fun addIdea(idea: Idea): EmptyResult<DataError> {
         return remoteDataSource.addIdea(idea.toIdeaData())
     }

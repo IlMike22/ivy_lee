@@ -5,6 +5,7 @@ package de.mindmarket.ivyleemaster.add_idea.presentation
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.database.core.utilities.Validation
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
 import de.mindmarket.ivyleemaster.core.domain.model.Genre
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
@@ -56,6 +57,7 @@ class AddIdeaViewModel(
                                 eventChannel.send(AddIdeaEvent.OnAddIdeaFailed)
                             } else {
                                 eventChannel.send(AddIdeaEvent.OnShowSnackbar(validationState.textId))
+                                // TODO navigate back to IdeaScreen
                             }
                         }
 
@@ -74,12 +76,10 @@ class AddIdeaViewModel(
 
 
     private fun validateNewIdea(): ValidationState {
-        return if (_state.value.title.toString().isBlank()) {
-            ValidationState.TitleMissing
-        } else if (_state.value.genre == null) {
-            ValidationState.NoGenre
-        } else {
-            ValidationState.Success
+        return when {
+            _state.value.title.text.toString().isBlank() -> ValidationState.TitleMissing
+            _state.value.genre == null -> ValidationState.NoGenre
+            else -> ValidationState.Success
         }
     }
 }

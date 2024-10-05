@@ -1,8 +1,13 @@
 package de.mindmarket.ivyleemaster.idea.presentation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Scaffold
@@ -19,16 +24,19 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun IdeaScreenRoot(
+    state: IdeaState,
+    onAction: (IdeaAction) -> Unit,
     viewModel: IdeaViewModel = koinViewModel(),
     onAddIdeaClick: () -> Unit
 ) {
     IdeaScreen(
-        state = viewModel.state,
+        state = state,
         onAction = viewModel::onAction,
         onAddIdeaClick = onAddIdeaClick
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun IdeaScreen(
     state: IdeaState,
@@ -53,10 +61,16 @@ fun IdeaScreen(
                     .fillMaxSize()
 
             ) {
-                Text(
-                    text = "Hello Idea Screen!",
-                    textAlign = TextAlign.Center
-                )
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    items(state.ideas) { idea ->
+                        Text("Hello. This is the title: ${idea.title}")
+                        Spacer(modifier = Modifier.height(4.dp))
+                    }
+                }
             }
         }
     }

@@ -7,8 +7,11 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -20,9 +23,11 @@ import de.mindmarket.ivyleemaster.auth.login.presentation.LoginScreenRoot
 import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterScreenRoot
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyBottomAppBar
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaScreenRoot
+import de.mindmarket.ivyleemaster.idea.presentation.IdeaViewModel
 import de.mindmarket.ivyleemaster.settings.SettingsScreenRoot
 import de.mindmarket.ivyleemaster.task.presentation.TaskScreenRoot
 import de.mindmarket.ivyleemaster.util.presentation.Route
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun NavigationRoot(
@@ -103,7 +108,11 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
             TaskScreenRoot()
         }
         composable(route = Route.IDEA) {
+            val viewModel = koinViewModel<IdeaViewModel>()
+            val state by viewModel.state.collectAsState()
             IdeaScreenRoot(
+                state = state,
+                onAction = viewModel::onAction,
                 onAddIdeaClick = {
                     navController.navigate(Route.ADD_IDEA)
                 }
