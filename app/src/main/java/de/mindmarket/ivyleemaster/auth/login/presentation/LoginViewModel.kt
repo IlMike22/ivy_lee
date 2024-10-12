@@ -3,17 +3,13 @@
 package de.mindmarket.ivyleemaster.auth.login.presentation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.setTextAndSelectAll
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
-import de.mindmarket.ivyleemaster.util.domain.DataError
 import de.mindmarket.ivyleemaster.util.domain.Result
-import de.mindmarket.ivyleemaster.util.presentation.UiText
 import de.mindmarket.ivyleemaster.util.presentation.asUiText
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -27,16 +23,6 @@ class LoginViewModel(
 
     private val eventChannel = Channel<LoginEvent>()
     val events = eventChannel.receiveAsFlow()
-
-    init {
-        viewModelScope.launch {
-            if (repository.checkIfUserIsAuthenticated()) {
-                eventChannel.send(
-                    LoginEvent.OnLoginSuccess(false)
-                )
-            }
-        }
-    }
 
     fun onAction(action: LoginAction) {
         when (action) {

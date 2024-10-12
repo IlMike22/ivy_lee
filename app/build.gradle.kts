@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.jetbrains.kotlin.serialization)
     id("com.google.gms.google-services")
 }
 
@@ -89,4 +91,7 @@ dependencies {
 
     // KSP
     compileOnly(libs.ksp.gradlePlugin)
+
+    // Kotlin Serialization
+    implementation(libs.kotlinx.serialization.json)
 }

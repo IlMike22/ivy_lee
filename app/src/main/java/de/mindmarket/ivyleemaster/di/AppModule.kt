@@ -2,6 +2,7 @@ package de.mindmarket.ivyleemaster.di
 
 import com.google.firebase.auth.FirebaseAuth
 import de.mindmarket.ivyleemaster.IvyLeeMasterApp
+import de.mindmarket.ivyleemaster.MainViewModel
 import de.mindmarket.ivyleemaster.add_idea.presentation.AddIdeaViewModel
 import de.mindmarket.ivyleemaster.auth.data.AuthRemoteDataSource
 import de.mindmarket.ivyleemaster.auth.data.UserAuthRepository
@@ -46,4 +47,7 @@ val appModule = module {
 
     // Settings
     viewModelOf(::SettingsViewModel)
+
+    // Main
+    viewModelOf(::MainViewModel)
 }

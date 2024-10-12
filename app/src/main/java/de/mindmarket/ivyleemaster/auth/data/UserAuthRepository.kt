@@ -41,7 +41,8 @@ class UserAuthRepository(
         return remoteDataSource.register(email, password)
     }
 
-    override suspend fun checkIfUserIsAuthenticated() = remoteDataSource.checkIfUserIsAuthenticated()
+    override suspend fun checkIfUserIsAuthenticated() =
+        remoteDataSource.checkIfUserIsAuthenticated()
 
     override suspend fun getUserId(): String? = remoteDataSource.getUserId()
 

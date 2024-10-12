@@ -11,7 +11,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -26,29 +25,31 @@ import de.mindmarket.ivyleemaster.idea.presentation.IdeaScreenRoot
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaViewModel
 import de.mindmarket.ivyleemaster.settings.SettingsScreenRoot
 import de.mindmarket.ivyleemaster.task.presentation.TaskScreenRoot
-import de.mindmarket.ivyleemaster.util.presentation.Route
+import de.mindmarket.ivyleemaster.util.presentation.Destination
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun NavigationRoot(
-    navController: NavHostController
+    navController: NavHostController,
+    isUserLoggedIn: Boolean
 ) {
     Scaffold(
         bottomBar = {
-                IvyBottomAppBar(
-                    screens = listOf(
-                        Screen.Task,
-                        Screen.Idea,
-                        Screen.Settings
-                    ),
-                    navController = navController
-                )
+            IvyBottomAppBar(
+                isVisible = isUserLoggedIn,
+                screens = listOf(
+                    Screen.Task,
+                    Screen.Idea,
+                    Screen.Settings
+                ),
+                navController = navController
+            )
 
         }
     ) { padding ->
         NavHost(
             navController = navController,
-            startDestination = Route.AUTH,
+            startDestination = if (isUserLoggedIn) Destination.Home else Destination.Auth,
             modifier = Modifier.padding(padding)
         ) {
             authGraph(navController)
@@ -58,22 +59,21 @@ fun NavigationRoot(
 }
 
 private fun NavGraphBuilder.authGraph(navController: NavController) {
-    navigation(
-        route = Route.AUTH,
-        startDestination = Route.LOGIN
+    navigation<Destination.Auth>(
+        startDestination = Destination.Login
     ) {
-        composable(route = Route.LOGIN) {
+        composable<Destination.Login> {
             LoginScreenRoot(
                 onLoginSuccess = {
-                    navController.navigate(Route.TASK) {
-                        popUpTo(Route.LOGIN) {
+                    navController.navigate(Destination.Home) {
+                        popUpTo(Destination.Auth) {
                             inclusive = true
                         }
                     }
                 },
                 onRegisterClick = {
-                    navController.navigate(Route.REGISTER) {
-                        popUpTo(Route.LOGIN) {
+                    navController.navigate(Destination.Register) {
+                        popUpTo(Destination.Login) {
                             inclusive = true
                             saveState = true
                         }
@@ -83,11 +83,11 @@ private fun NavGraphBuilder.authGraph(navController: NavController) {
             )
         }
 
-        composable(route = Route.REGISTER) {
+        composable<Destination.Register> {
             RegisterScreenRoot(
                 onNavigateToLoginClick = {
-                    navController.navigate(Route.LOGIN) {
-                        popUpTo(Route.REGISTER) {
+                    navController.navigate(Destination.Login) {
+                        popUpTo(Destination.Register) {
                             inclusive = true
                             saveState = true
                         }
@@ -100,28 +100,27 @@ private fun NavGraphBuilder.authGraph(navController: NavController) {
 }
 
 private fun NavGraphBuilder.mainGraph(navController: NavController) {
-    navigation(
-        route = "main",
-        startDestination = Route.TASK
+    navigation<Destination.Home>(
+        startDestination = Destination.Task
     ) {
-        composable(route = Route.TASK) {
+        composable<Destination.Task> {
             TaskScreenRoot()
         }
-        composable(route = Route.IDEA) {
+        composable<Destination.Idea> {
             val viewModel = koinViewModel<IdeaViewModel>()
             val state by viewModel.state.collectAsState()
             IdeaScreenRoot(
                 state = state,
                 onAction = viewModel::onAction,
                 onAddIdeaClick = {
-                    navController.navigate(Route.ADD_IDEA)
+                    navController.navigate(Destination.AddIdea)
                 }
             )
         }
-        composable(route = Route.SETTINGS) {
+        composable<Destination.Settings> {
             SettingsScreenRoot()
         }
-        composable(route = Route.ADD_IDEA) {
+        composable<Destination.AddIdea> {
             AddIdeaScreenRoot(
                 onBackClick = {
                     navController.popBackStack()
@@ -131,11 +130,20 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
     }
 }
 
-sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
-    data object Task : Screen(route = Route.TASK, label = "Home", icon = Icons.Default.Home)
+sealed class Screen(val destination: Any, val label: String, val icon: ImageVector) {
+    data object Task :
+        Screen(destination = Destination.Task, label = "Home", icon = Icons.Default.Home)
     data object Idea :
-        Screen(route = Route.IDEA, label = "Idea Pool", icon = Icons.Default.ShoppingCart)
+        Screen(
+            destination = Destination.Idea,
+            label = "Idea Pool",
+            icon = Icons.Default.ShoppingCart
+        )
 
     data object Settings :
-        Screen(route = Route.SETTINGS, label = "Settings", icon = Icons.Default.Settings)
+        Screen(
+            destination = Destination.Settings,
+            label = "Settings",
+            icon = Icons.Default.Settings
+        )
 }

@@ -3,7 +3,7 @@
 package de.mindmarket.ivyleemaster.auth.register.presentation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.TextFieldState
+import androidx.compose.foundation.text.input.TextFieldState
 
 data class RegisterState(
     val email: TextFieldState = TextFieldState(),

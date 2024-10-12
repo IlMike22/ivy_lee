@@ -8,35 +8,31 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import de.mindmarket.ivyleemaster.Screen
-import de.mindmarket.ivyleemaster.util.presentation.Route
+import de.mindmarket.ivyleemaster.util.presentation.Destination
 
 @Composable
 fun IvyBottomAppBar(
     screens: List<Screen>,
     navController: NavController,
+    isVisible:Boolean,
     modifier: Modifier = Modifier
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val isBottomBarVisible = navController.currentDestination?.route != Route.LOGIN
-            && navController.currentDestination?.route != Route.REGISTER
-
-    if (isBottomBarVisible) {
+    if (isVisible) {
         BottomAppBar(
             actions = {
                 screens.forEach { screen ->
                     NavigationBarItem(
-                        selected = currentRoute == screen.route,
+                        selected = currentRoute == screen.destination,
                         onClick = {
-                            if (currentRoute != screen.route) {
-                                navController.navigate(screen.route) {
+                            if (currentRoute != screen.destination) {
+                                navController.navigate(screen.destination) {
                                     launchSingleTop = true
                                     restoreState = true
                                     popUpTo(navController.graph.startDestinationId) {

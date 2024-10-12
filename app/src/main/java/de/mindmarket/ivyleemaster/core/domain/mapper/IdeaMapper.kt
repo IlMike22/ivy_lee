@@ -3,10 +3,9 @@
 package de.mindmarket.ivyleemaster.core.domain.mapper
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text2.input.TextFieldState
+import androidx.compose.foundation.text.input.TextFieldState
 import de.mindmarket.ivyleemaster.core.data.model.Status
 import de.mindmarket.ivyleemaster.core.domain.model.Genre
-import de.mindmarket.ivyleemaster.core.domain.model.GenreId
 import de.mindmarket.ivyleemaster.core.domain.model.GenreId.*
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
 
@@ -41,7 +40,8 @@ fun de.mindmarket.ivyleemaster.core.data.model.Idea.toIdeaDomain() =
 fun de.mindmarket.ivyleemaster.core.data.model.Genre.toDomainGenre() =
     Genre.FITTNESS // TODO continue with mapper
 
-fun Status.toDomainStatus() = de.mindmarket.ivyleemaster.core.domain.model.Status.OPEN // TODO continue with mapper
+fun Status.toDomainStatus() =
+    de.mindmarket.ivyleemaster.core.domain.model.Status.OPEN // TODO continue with mapper
 
 fun Genre.toGenreData() =
     when (this.id) {

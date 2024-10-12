@@ -8,11 +8,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
-import de.mindmarket.ivyleemaster.util.presentation.Route
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -27,8 +28,12 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
+                    val viewModel = koinViewModel<MainViewModel>()
+                    val isUserLoggedIn by viewModel.isUserLoggedIn.collectAsStateWithLifecycle()
+
                     NavigationRoot(
-                        navController
+                        navController,
+                        isUserLoggedIn
                     )
                 }
             }
