@@ -16,6 +16,10 @@ class MainViewModel(
     val isUserLoggedIn = _isUserLoggedIn.asStateFlow()
 
     init {
+        checkLoginState()
+    }
+
+    fun checkLoginState() {
         viewModelScope.launch {
             _isUserLoggedIn.value = repository.checkIfUserIsAuthenticated()
         }

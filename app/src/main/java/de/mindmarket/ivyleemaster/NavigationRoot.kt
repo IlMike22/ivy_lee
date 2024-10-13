@@ -31,7 +31,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun NavigationRoot(
     navController: NavHostController,
-    isUserLoggedIn: Boolean
+    isUserLoggedIn: Boolean,
+    onLoginSuccess: () -> Unit
 ) {
     Scaffold(
         bottomBar = {
@@ -52,13 +53,16 @@ fun NavigationRoot(
             startDestination = if (isUserLoggedIn) Destination.Home else Destination.Auth,
             modifier = Modifier.padding(padding)
         ) {
-            authGraph(navController)
+            authGraph(navController, onLoginSuccess)
             mainGraph(navController)
         }
     }
 }
 
-private fun NavGraphBuilder.authGraph(navController: NavController) {
+private fun NavGraphBuilder.authGraph(
+    navController: NavController,
+    onLoginSuccess: () -> Unit
+) {
     navigation<Destination.Auth>(
         startDestination = Destination.Login
     ) {
@@ -70,6 +74,7 @@ private fun NavGraphBuilder.authGraph(navController: NavController) {
                             inclusive = true
                         }
                     }
+                    onLoginSuccess()
                 },
                 onRegisterClick = {
                     navController.navigate(Destination.Register) {

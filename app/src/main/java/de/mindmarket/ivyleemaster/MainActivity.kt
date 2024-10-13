@@ -33,7 +33,10 @@ class MainActivity : ComponentActivity() {
 
                     NavigationRoot(
                         navController,
-                        isUserLoggedIn
+                        isUserLoggedIn,
+                        onLoginSuccess = {
+                            viewModel.checkLoginState()
+                        }
                     )
                 }
             }
