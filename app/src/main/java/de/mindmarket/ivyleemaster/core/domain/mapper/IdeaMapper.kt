@@ -19,8 +19,8 @@ fun Idea.toIdeaData() =
         title = this.title.text.toString(),
         subtitle = this.subtitle.text.toString(),
         mainTopic = this.mainTopic,
-        isUrgent = this.isUrgent,
-        isRepeatable = this.isRepeatable,
+        urgent = this.isUrgent,
+        repeatable = this.isRepeatable,
         genre = requireNotNull(this.genre).toGenreData()
     )
 
@@ -32,8 +32,8 @@ fun de.mindmarket.ivyleemaster.core.data.model.Idea.toIdeaDomain() =
         subtitle = TextFieldState(this.title),
         genre = this.genre.toDomainGenre(),
         mainTopic = this.mainTopic,
-        isUrgent = this.isUrgent,
-        isRepeatable = this.isRepeatable,
+        isUrgent = this.urgent,
+        isRepeatable = this.repeatable,
         status = this.status.toDomainStatus()
     )
 

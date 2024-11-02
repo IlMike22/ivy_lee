@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.mindmarket.ivyleemaster.core.presentation.GradientBackground
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyFloatingActionButton
+import de.mindmarket.ivyleemaster.core.presentation.components.IvyIdeaItem
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
 import org.koin.androidx.compose.koinViewModel
 
@@ -67,8 +68,8 @@ fun IdeaScreen(
                         .padding(16.dp)
                 ) {
                     items(state.ideas) { idea ->
-                        Text("Hello. This is the title: ${idea.title}")
-                        Spacer(modifier = Modifier.height(4.dp))
+                       IvyIdeaItem(idea)
+                        Spacer(Modifier.height(4.dp))
                     }
                 }
             }

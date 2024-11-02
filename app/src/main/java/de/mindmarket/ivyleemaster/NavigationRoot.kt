@@ -11,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -113,7 +114,7 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
         }
         composable<Destination.Idea> {
             val viewModel = koinViewModel<IdeaViewModel>()
-            val state by viewModel.state.collectAsState()
+            val state by viewModel.state.collectAsStateWithLifecycle()
             IdeaScreenRoot(
                 state = state,
                 onAction = viewModel::onAction,

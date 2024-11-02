@@ -46,11 +46,14 @@ data class Genre(
 ) {
     companion object {
         val EMPTY = Genre(R.string.genre_title_undefined, Icons.Filled.Warning, GenreId.UNDEFINED)
-        val RELATIONSHIP = Genre(R.string.genre_title_relationship, Icons.Filled.Favorite, GenreId.RELATIONSHIP)
+        val RELATIONSHIP =
+            Genre(R.string.genre_title_relationship, Icons.Filled.Favorite, GenreId.RELATIONSHIP)
         val BUSINESS = Genre(R.string.genre_title_business, Icons.Filled.Build, GenreId.BUSINESS)
         val FITTNESS = Genre(R.string.genre_title_fittness, Icons.Filled.ThumbUp, GenreId.FITTNESS)
-        val SOCIALISING = Genre(R.string.genre_title_socialising, Icons.Filled.Face, GenreId.SOCIALISING)
-        val FINANCE = Genre(R.string.genre_title_business, Icons.Filled.ShoppingCart, GenreId.FINANCE)
+        val SOCIALISING =
+            Genre(R.string.genre_title_socialising, Icons.Filled.Face, GenreId.SOCIALISING)
+        val FINANCE =
+            Genre(R.string.genre_title_business, Icons.Filled.ShoppingCart, GenreId.FINANCE)
     }
 }
 

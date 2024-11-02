@@ -19,9 +19,6 @@ class IdeaViewModel(
     private val _state = MutableStateFlow(IdeaState())
     var state = _state.asStateFlow()
 
-    private val _ideas = MutableStateFlow<List<Idea>>(emptyList())
-    val ideas = _ideas.asStateFlow()
-
     init {
         viewModelScope.launch {
             val userId = authRepository.getUserId()
@@ -34,7 +31,9 @@ class IdeaViewModel(
                     is Result.Success -> {
                         _state.update {
                             it.copy(
-                                ideas = result.data.map { it.toIdeaDomain() }
+                                ideas = result.data.map {  ideaData ->
+                                    ideaData.toIdeaDomain()
+                                }
                             )
                         }
                     }
