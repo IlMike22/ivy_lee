@@ -7,6 +7,7 @@ package de.mindmarket.ivyleemaster.add_idea.presentation
 
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -19,6 +20,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Place
@@ -164,6 +167,7 @@ fun AddIdeaScreen(
             content = { padding ->
                 Column(
                     modifier = Modifier
+                        .verticalScroll(rememberScrollState())
                         .fillMaxSize()
                         .padding(padding)
                         .padding(horizontal = 8.dp)
@@ -215,12 +219,12 @@ fun AddIdeaScreen(
 
                     Column(
                         modifier = Modifier.fillMaxHeight(),
-                        verticalArrangement = Arrangement.Bottom
+                        verticalArrangement = Arrangement.Bottom,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         IvyPrimaryButton(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 128.dp)
                                 .height(64.dp),
                             text = stringResource(R.string.add_idea_primary_button_text),
                             onClick = {

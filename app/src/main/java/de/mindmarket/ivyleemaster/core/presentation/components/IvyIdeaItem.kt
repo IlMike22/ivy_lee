@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,7 +50,9 @@ fun IvyIdeaItem(
                 .padding(horizontal = 4.dp),
         ) {
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(4.dp),
                 horizontalArrangement = Arrangement.End
             ) {
                 Text(
@@ -57,7 +60,8 @@ fun IvyIdeaItem(
                         .weight(1f)
                         .fillMaxWidth(),
                     text = idea.title.text.toString(),
-                    fontSize = 14.sp
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
                 )
 
                 if (idea.genre != null) {
@@ -71,19 +75,29 @@ fun IvyIdeaItem(
                 }
             }
             Text(
+                modifier = Modifier.padding(4.dp),
                 text = idea.subtitle.text.toString(),
-                fontSize = 12.sp
+                fontSize = 14.sp
             )
-            Text(
-                text = "Repeatable: ${idea.isRepeatable}",
-                fontSize = 12.sp,
-                fontStyle = FontStyle.Italic
-            )
-            Text(
-                text = "Urgent: ${idea.isUrgent}",
-                fontSize = 12.sp,
-                fontStyle = FontStyle.Italic
-            )
+
+            Spacer(Modifier.height(32.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = "Repeatable: ${idea.isRepeatable}",
+                    fontSize = 14.sp,
+                    fontStyle = FontStyle.Italic
+                )
+                Text(
+                    text = "Urgent: ${idea.isUrgent}",
+                    fontSize = 14.sp,
+                    fontStyle = FontStyle.Italic
+                )
+            }
+
         }
     }
 }
