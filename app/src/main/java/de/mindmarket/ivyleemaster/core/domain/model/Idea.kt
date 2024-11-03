@@ -2,13 +2,19 @@
 
 package de.mindmarket.ivyleemaster.core.domain.model
 
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Warning
@@ -71,7 +77,25 @@ enum class Type {
     TASK
 }
 
-enum class Status {
+data class Status(
+    @StringRes val title: Int,
+    val icon: ImageVector,
+    val id: StatusId
+) {
+    companion object {
+        val OPEN = Status(R.string.status_title_open, Icons.Filled.DateRange, StatusId.OPEN)
+        val IN_PROGRESS =
+            Status(R.string.status_title_open, Icons.Filled.Build, StatusId.IN_PROGRESS)
+        val DONE = Status(R.string.status_title_done, Icons.Filled.Done, StatusId.DONE)
+        val CANCELLED =
+            Status(R.string.status_title_cancelled, Icons.Filled.Delete, StatusId.CANCELLED)
+        val UNDEFINED =
+            Status(R.string.status_title_undefined, Icons.Filled.Lock, StatusId.UNDEFINED)
+
+    }
+}
+
+enum class StatusId {
     OPEN,
     IN_PROGRESS,
     DONE,

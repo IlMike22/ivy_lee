@@ -53,5 +53,14 @@
     <string name="add_idea_validation_title_missing">You need to define a title</string>
     <string name="add_idea_validation_genre_missing">You need to define a genre</string>
 
+    <!-- status -->
+    <string name="status_title_open">Open</string>
+    <string name="status_title_in_progress">In Progress</string>
+    <string name="status_title_done">Done</string>
+    <string name="status_title_cancelled">Cancelled</string>
+    <string name="status_title_undefined">Undefined</string>
+    <string name="card_item_repetable_text">repeatable</string>
+    <string name="card_item_urgent_text">urgent</string>
+
 
 </resources>
