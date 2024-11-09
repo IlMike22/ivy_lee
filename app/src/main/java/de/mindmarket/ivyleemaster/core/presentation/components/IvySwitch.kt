@@ -26,10 +26,11 @@ import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
 fun IvySwitch(
     onCheckChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    label: String? = null
+    label: String? = null,
+    isChecked: Boolean = false,
 ) {
     var checked by rememberSaveable {
-        mutableStateOf(true)
+        mutableStateOf(isChecked)
     }
     Row(
         modifier = modifier

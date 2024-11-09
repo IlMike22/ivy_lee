@@ -2,10 +2,8 @@
 
 package de.mindmarket.ivyleemaster.core.domain.model
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.DateRange
@@ -13,7 +11,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.ThumbUp
@@ -27,8 +24,8 @@ typealias IdeaId = String
 data class Idea(
     val id: IdeaId,
     val userId: UserId,
-    val title: TextFieldState = TextFieldState(),
-    val subtitle: TextFieldState = TextFieldState(),
+    val title: String = "",
+    val subtitle: String = "",
     val genre: Genre? = null,
     val mainTopic: IdeaId? = null,
     val isUrgent: Boolean = false,
@@ -40,7 +37,7 @@ data class Idea(
         val EMPTY = Idea(
             id = "",
             userId = "",
-            title = TextFieldState("")
+            title = ""
         )
     }
 }

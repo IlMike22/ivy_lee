@@ -17,6 +17,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navigation
 import de.mindmarket.ivyleemaster.add_idea.presentation.AddIdeaScreenRoot
 import de.mindmarket.ivyleemaster.auth.login.presentation.LoginScreenRoot
@@ -115,12 +116,21 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
         composable<Destination.Idea> {
             val viewModel = koinViewModel<IdeaViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
+
+            // updating list after coming back from add idea screen..
+            val backStackEntryResult by navController.currentBackStackEntryAsState()
+            val result = backStackEntryResult?.savedStateHandle?.getLiveData<Boolean>("invalidate")
+
+//                    ?.savedStateHandle
+//                ?.getLiveData<Boolean>("invalidate")?.observe()
+
             IdeaScreenRoot(
                 state = state,
                 onAction = viewModel::onAction,
                 onAddIdeaClick = {
                     navController.navigate(Destination.AddIdea)
-                }
+                },
+                invalidateList = result
             )
         }
         composable<Destination.Settings> {
@@ -129,6 +139,8 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
         composable<Destination.AddIdea> {
             AddIdeaScreenRoot(
                 onBackClick = {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle?.set("invalidate", true)
                     navController.popBackStack()
                 }
             )

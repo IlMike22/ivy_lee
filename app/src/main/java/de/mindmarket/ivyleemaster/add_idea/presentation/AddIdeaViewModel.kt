@@ -1,15 +1,9 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
 package de.mindmarket.ivyleemaster.add_idea.presentation
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.database.core.utilities.Validation
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
-import de.mindmarket.ivyleemaster.core.domain.model.Genre
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
-import de.mindmarket.ivyleemaster.idea.presentation.IdeaAction
 import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
 import de.mindmarket.ivyleemaster.util.domain.Result
 import kotlinx.coroutines.channels.Channel
@@ -38,9 +32,9 @@ class AddIdeaViewModel(
         }
     }
 
-    fun onAction(action: IdeaAction) {
+    fun onAction(action: AddIdeaAction) {
         when (action) {
-            IdeaAction.OnAddIdeaClick -> {
+            AddIdeaAction.OnAddAddIdeaClick -> {
                 viewModelScope.launch {
                     when (val validationState = validateNewIdea()) {
                         ValidationState.Success -> {
@@ -48,16 +42,18 @@ class AddIdeaViewModel(
                                 Idea(
                                     id = UUID.randomUUID().toString(),
                                     userId = userId,
-                                    title = _state.value.title,
-                                    subtitle = _state.value.subTitle,
-                                    genre = _state.value.genre
+                                    title = _state.value.title.text.toString(),
+                                    subtitle = _state.value.subtitle.text.toString(),
+                                    genre = _state.value.genre,
+                                    isUrgent = _state.value.isUrgent,
+                                    isRepeatable = _state.value.isRepeatable
                                 )
                             )
                             if (result is Result.Error) {
                                 eventChannel.send(AddIdeaEvent.OnAddIdeaFailed)
                             } else {
                                 eventChannel.send(AddIdeaEvent.OnShowSnackbar(validationState.textId))
-                                // TODO navigate back to IdeaScreen
+                                eventChannel.send(AddIdeaEvent.OnNavigateBack)
                             }
                         }
 
@@ -68,8 +64,16 @@ class AddIdeaViewModel(
                 }
             }
 
-            is IdeaAction.OnGenreClick -> {
+            is AddIdeaAction.OnGenreClick -> {
                 _state.update { it.copy(genre = action.genre) }
+            }
+
+            AddIdeaAction.OnToggleRepeatableSwitch -> {
+                _state.update { it.copy(isRepeatable = !state.value.isRepeatable) }
+            }
+
+            AddIdeaAction.OnToggleIsUrgentSwitch -> {
+                _state.update { it.copy(isUrgent = !state.value.isUrgent) }
             }
         }
     }

@@ -25,30 +25,33 @@ fun IvyFloatingActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
-    iconSize: Dp = 25.dp
+    iconSize: Dp = 25.dp,
+    isVisible: Boolean = true
 ) {
-    Box(
-        modifier = modifier
-            .size(75.dp)
-            .clip(CircleShape)
-            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
-            .clickable { onClick() },
-        contentAlignment = Alignment.Center
-    ) {
+    if (isVisible) {
         Box(
-            modifier = Modifier
-                .size(50.dp)
+            modifier = modifier
+                .size(75.dp)
                 .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary)
-                .padding(12.dp),
+                .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.3f))
+                .clickable { onClick() },
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = contentDescription,
-                tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.size(iconSize)
-            )
+            Box(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .padding(12.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = contentDescription,
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(iconSize)
+                )
+            }
         }
     }
 }

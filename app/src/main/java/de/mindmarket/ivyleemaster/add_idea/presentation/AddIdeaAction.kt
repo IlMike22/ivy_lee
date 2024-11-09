@@ -1,8 +1,10 @@
 package de.mindmarket.ivyleemaster.add_idea.presentation
 
-import de.mindmarket.ivyleemaster.core.domain.model.Idea
+import de.mindmarket.ivyleemaster.core.domain.model.Genre
 
 sealed interface AddIdeaAction {
-    data class OnSaveButtonClick(val idea: Idea): AddIdeaAction
-    data object OnBackButtonClick: AddIdeaAction
+    data object OnAddAddIdeaClick : AddIdeaAction
+    data class OnGenreClick(val genre: Genre) : AddIdeaAction
+    data object OnToggleRepeatableSwitch: AddIdeaAction
+    data object OnToggleIsUrgentSwitch: AddIdeaAction
 }

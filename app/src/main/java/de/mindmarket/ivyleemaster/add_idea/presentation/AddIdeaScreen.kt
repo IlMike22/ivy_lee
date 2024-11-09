@@ -7,7 +7,6 @@ package de.mindmarket.ivyleemaster.add_idea.presentation
 
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -59,7 +58,6 @@ import de.mindmarket.ivyleemaster.core.presentation.components.IvyPrimaryButton
 import de.mindmarket.ivyleemaster.core.presentation.components.IvySwitch
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyToolbar
 import de.mindmarket.ivyleemaster.core.presentation.util.DropDownItem
-import de.mindmarket.ivyleemaster.idea.presentation.IdeaAction
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
 import de.mindmarket.ivyleemaster.ui.theme.IvyLogo
 import de.mindmarket.ivyleemaster.ui.theme.Settings
@@ -110,6 +108,11 @@ fun AddIdeaScreenRoot(
                                 ), Toast.LENGTH_LONG
                             ).show()
                         }
+
+                        AddIdeaEvent.OnNavigateBack -> {
+                            keyboardController?.hide()
+                            onBackClick()
+                        }
                     }
                 }
             }
@@ -123,10 +126,11 @@ fun AddIdeaScreenRoot(
     )
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AddIdeaScreen(
     state: AddIdeaState,
-    onAction: (IdeaAction) -> Unit,
+    onAction: (AddIdeaAction) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -187,18 +191,20 @@ fun AddIdeaScreen(
                     )
                     Spacer(Modifier.height(16.dp))
                     IvyInputTextField(
-                        state = state.subTitle,
+                        state = state.subtitle,
                         hint = stringResource(R.string.add_idea_hint_text_subtitle)
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     IvySwitch(
-                        onCheckChange = { state.isUrgent },
-                        label = stringResource(R.string.add_idea_switch_high_priority_text)
+                        onCheckChange = { onAction(AddIdeaAction.OnToggleIsUrgentSwitch) },
+                        label = stringResource(R.string.add_idea_switch_high_priority_text),
+                        isChecked = false
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     IvySwitch(
-                        onCheckChange = { state.isRepeatable },
-                        label = stringResource(R.string.add_idea_switch_repeatable_text)
+                        onCheckChange = { onAction(AddIdeaAction.OnToggleRepeatableSwitch) },
+                        label = stringResource(R.string.add_idea_switch_repeatable_text),
+                        isChecked = false
                     )
 
                     FlowRow(
@@ -211,7 +217,7 @@ fun AddIdeaScreen(
                                 label = stringResource(id = genre.title),
                                 isSelected = state.genre == genre,
                                 icon = genre.icon,
-                                onClick = { onAction(IdeaAction.OnGenreClick(genre)) },
+                                onClick = { onAction(AddIdeaAction.OnGenreClick(genre)) },
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                         }
@@ -228,7 +234,7 @@ fun AddIdeaScreen(
                                 .height(64.dp),
                             text = stringResource(R.string.add_idea_primary_button_text),
                             onClick = {
-                                onAction(IdeaAction.OnAddIdeaClick)
+                                onAction(AddIdeaAction.OnAddAddIdeaClick)
                             }
                         )
                     }
@@ -240,7 +246,11 @@ fun AddIdeaScreen(
 
 private fun createGenreList() =
     listOf(
-        Genre(title = R.string.genre_title_relationship, Icons.Filled.ThumbUp, GenreId.RELATIONSHIP),
+        Genre(
+            title = R.string.genre_title_relationship,
+            Icons.Filled.ThumbUp,
+            GenreId.RELATIONSHIP
+        ),
         Genre(title = R.string.genre_title_business, Icons.Filled.PlayArrow, GenreId.BUSINESS),
         Genre(title = R.string.genre_title_fittness, Icons.Filled.Place, GenreId.FITTNESS),
         Genre(title = R.string.genre_title_socialising, Icons.Filled.Star, GenreId.SOCIALISING),

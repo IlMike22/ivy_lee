@@ -61,6 +61,7 @@
     <string name="status_title_undefined">Undefined</string>
     <string name="card_item_repetable_text">repeatable</string>
     <string name="card_item_urgent_text">urgent</string>
+    <string name="idea_error_loading_ideas">Ideas could not be loaded. There was a loading error. Please try again.</string>
 
 
 </resources>

@@ -7,6 +7,7 @@ sealed interface AddIdeaEvent {
     data class OnValidationFailed(val validation: ValidationState) : AddIdeaEvent
     data object OnAddIdeaFailed : AddIdeaEvent
     data class OnShowSnackbar(@StringRes val title: Int) : AddIdeaEvent
+    data object OnNavigateBack: AddIdeaEvent
 }
 
 sealed class ValidationState(@StringRes val textId: Int) {

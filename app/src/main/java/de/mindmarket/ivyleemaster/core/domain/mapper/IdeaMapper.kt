@@ -3,10 +3,12 @@
 package de.mindmarket.ivyleemaster.core.domain.mapper
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.text.input.TextFieldState
 import de.mindmarket.ivyleemaster.core.data.model.Status
 import de.mindmarket.ivyleemaster.core.domain.model.Genre
-import de.mindmarket.ivyleemaster.core.domain.model.GenreId.*
+import de.mindmarket.ivyleemaster.core.domain.model.GenreId.BUSINESS
+import de.mindmarket.ivyleemaster.core.domain.model.GenreId.FINANCE
+import de.mindmarket.ivyleemaster.core.domain.model.GenreId.FITTNESS
+import de.mindmarket.ivyleemaster.core.domain.model.GenreId.RELATIONSHIP
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
 
 typealias IdeaData = de.mindmarket.ivyleemaster.core.data.model.Idea
@@ -16,8 +18,8 @@ fun Idea.toIdeaData() =
     IdeaData(
         id = this.id,
         userId = this.userId,
-        title = this.title.text.toString(),
-        subtitle = this.subtitle.text.toString(),
+        title = this.title,
+        subtitle = this.subtitle,
         mainTopic = this.mainTopic,
         urgent = this.isUrgent,
         repeatable = this.isRepeatable,
@@ -28,8 +30,8 @@ fun de.mindmarket.ivyleemaster.core.data.model.Idea.toIdeaDomain() =
     Idea(
         id = this.id,
         userId = this.userId,
-        title = TextFieldState(this.title),
-        subtitle = TextFieldState(this.title),
+        title = this.title,
+        subtitle = this.title,
         genre = this.genre.toDomainGenre(),
         mainTopic = this.mainTopic,
         isUrgent = this.urgent,
