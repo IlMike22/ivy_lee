@@ -10,5 +10,5 @@ import kotlinx.coroutines.flow.Flow
 interface IdeaRepository {
     suspend fun getIdeas(userId: String): Result<List<de.mindmarket.ivyleemaster.core.data.model.Idea>, DataError.Network>
     suspend fun addIdea(idea: Idea): EmptyResult<DataError>
-    suspend fun deleteIdea(id: IdeaId): EmptyResult<DataError>
+    suspend fun deleteIdea(ideaId: IdeaId, userId:String): EmptyResult<DataError>
 }

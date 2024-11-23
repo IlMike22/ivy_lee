@@ -53,6 +53,24 @@ class IvyTaskRemoteDataSource(
                 }
         }
 
+    suspend fun deleteIdea(ideaId: String, userId: String) =
+        suspendCoroutine { continuation ->
+            firebaseDatabase
+                .child(FIREBASE_TABLE_IDEA)
+                .child(userId)
+                .child(ideaId)
+                .removeValue()
+                .addOnCompleteListener {
+                    continuation.resume(Result.Success(Unit))
+                }
+                .addOnCanceledListener {
+                    continuation.resume(Result.Error(DataError.Network.SERIALIZATION))
+                }
+                .addOnFailureListener { error ->
+                    continuation.resume(Result.Error(DataError.Network.SERVER_ERROR))
+                }
+        }
+
     companion object {
         const val FIREBASE_TABLE_IDEA = "idea"
     }

@@ -19,7 +19,7 @@ class IvyTaskRepository(
         return remoteDataSource.addIdea(idea.toIdeaData())
     }
 
-    override suspend fun deleteIdea(id: IdeaId): EmptyResult<DataError> {
-        TODO("Not yet implemented")
+    override suspend fun deleteIdea(ideaId: IdeaId, userId: String): EmptyResult<DataError> {
+        return remoteDataSource.deleteIdea(ideaId, userId)
     }
 }
