@@ -46,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.core.domain.model.Genre
@@ -71,7 +72,7 @@ fun AddIdeaScreenRoot(
 ) {
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    val state by viewModel.state.collectAsState()
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     val lifeCycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(viewModel.events, lifeCycleOwner.lifecycle) {

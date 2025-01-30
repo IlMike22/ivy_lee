@@ -30,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import de.mindmarket.ivyleemaster.R
-import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterEvent
 import de.mindmarket.ivyleemaster.core.presentation.GradientBackground
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyInputTextField
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyPasswordTextField
@@ -43,7 +42,6 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreenRoot(
-    modifier: Modifier = Modifier,
     viewModel: LoginViewModel = koinViewModel(),
     onLoginSuccess: () -> Unit,
     onRegisterClick: () -> Unit

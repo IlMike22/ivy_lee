@@ -46,6 +46,7 @@ class IdeaViewModel(
             }
 
             is IdeaAction.OnIdeaEditClick -> TODO()
+            is IdeaAction.OnMoveToTasksClick -> TODO()
         }
     }
 

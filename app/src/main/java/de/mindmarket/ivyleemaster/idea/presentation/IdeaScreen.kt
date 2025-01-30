@@ -56,7 +56,6 @@ fun IdeaScreenRoot(
     )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun IdeaScreen(
     state: IdeaState,
@@ -113,7 +112,7 @@ fun IdeaScreen(
                                 )
                                     .padding(8.dp)
                             ) {
-                                IvyIdeaItem(idea)
+                                IvyIdeaItem(idea = idea, onAction = onAction)
                                 Spacer(Modifier.height(4.dp))
                             }
 

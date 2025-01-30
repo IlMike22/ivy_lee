@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AssistChip
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -28,14 +29,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.mindmarket.ivyleemaster.R
+import de.mindmarket.ivyleemaster.add_idea.presentation.AddIdeaAction
 import de.mindmarket.ivyleemaster.core.domain.model.Genre
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
+import de.mindmarket.ivyleemaster.idea.presentation.IdeaAction
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
 
 @Composable
 fun IvyIdeaItem(
     idea: Idea,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onAction: (IdeaAction) -> Unit
 ) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
@@ -60,36 +64,42 @@ fun IvyIdeaItem(
                     .padding(bottom = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                if (idea.genre != null) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    if (idea.genre != null) {
+                        Image(
+                            modifier = Modifier
+                                .size(32.dp),
+                            colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
+                            imageVector = idea.genre.icon,
+                            contentDescription = null
+                        )
+                    }
+
                     Image(
                         modifier = Modifier
                             .size(32.dp),
                         colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
-                        imageVector = idea.genre.icon,
+                        imageVector = idea.status.icon,
                         contentDescription = null
                     )
-                }
 
-                Image(
-                    modifier = Modifier
-                        .size(16.dp),
-                    colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
-                    imageVector = idea.status.icon,
-                    contentDescription = null
-                )
+                }
+                Button(
+                    onClick = { onAction(IdeaAction.OnMoveToTasksClick(idea)) },
+                ) {
+                    Text(stringResource(R.string.idea_item_move_button_text))
+                }
             }
 
             Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
                 text = idea.title,
                 fontSize = 24.sp,
                 fontWeight = FontWeight.Bold
             )
 
-
             Text(
-                modifier = Modifier.padding(4.dp),
                 text = idea.subtitle,
                 fontSize = 14.sp
             )
@@ -128,7 +138,6 @@ fun IvyIdeaItem(
                     )
                 }
             }
-
         }
     }
 }
@@ -145,7 +154,8 @@ private fun IvyIdeaItemPreview() {
                 genre = Genre.FINANCE,
                 isUrgent = true,
                 isRepeatable = true
-            )
+            ),
+            onAction = {}
         )
     }
 }
