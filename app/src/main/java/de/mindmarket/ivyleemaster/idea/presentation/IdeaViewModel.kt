@@ -3,8 +3,13 @@ package de.mindmarket.ivyleemaster.idea.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
+import de.mindmarket.ivyleemaster.core.domain.mapper.toIdeaData
 import de.mindmarket.ivyleemaster.core.domain.mapper.toIdeaDomain
+import de.mindmarket.ivyleemaster.core.domain.mapper.toTaskData
+import de.mindmarket.ivyleemaster.core.domain.model.Idea
+import de.mindmarket.ivyleemaster.core.domain.model.Status
 import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
+import de.mindmarket.ivyleemaster.task.domain.Task
 import de.mindmarket.ivyleemaster.util.domain.Result
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,7 +51,29 @@ class IdeaViewModel(
             }
 
             is IdeaAction.OnIdeaEditClick -> TODO()
-            is IdeaAction.OnMoveToTasksClick -> TODO()
+            is IdeaAction.OnMoveToTasksClick -> moveIdeaToTask(action.idea)
+            is IdeaAction.OnMarkAsReadyClick -> {
+                val oldIdea = _state.value.ideas.first { it.id == action.idea.id }
+                val newIdea = oldIdea.copy(
+                    status = Status.READY
+                )
+                _state.update { it.copy(ideas = _state.value.ideas - oldIdea + newIdea) }
+            }
+        }
+    }
+
+    private fun moveIdeaToTask(idea:Idea) {
+        viewModelScope.launch {
+            userId?.apply {
+                repository.deleteIdea(idea.id, this)
+                val task = Task(
+                    id = idea.id,
+                    title = idea.title,
+                    description = idea.subtitle,
+                    status = de.mindmarket.ivyleemaster.task.domain.Status.OPEN
+                )
+                repository.addTask(task.toTaskData(), this)
+            }
         }
     }
 

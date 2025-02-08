@@ -22,4 +22,12 @@ class IvyTaskRepository(
     override suspend fun deleteIdea(ideaId: IdeaId, userId: String): EmptyResult<DataError> {
         return remoteDataSource.deleteIdea(ideaId, userId)
     }
+
+    override suspend fun addTask(task: Task, userId: String): EmptyResult<DataError> {
+        return remoteDataSource.addTask(task, userId)
+    }
+
+    override suspend fun getTasks(userId: String): Result<List<Task>, DataError.Network> {
+        return remoteDataSource.getTasks(userId)
+    }
 }

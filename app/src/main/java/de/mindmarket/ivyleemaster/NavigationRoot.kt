@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -27,6 +26,7 @@ import de.mindmarket.ivyleemaster.idea.presentation.IdeaScreenRoot
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaViewModel
 import de.mindmarket.ivyleemaster.settings.SettingsScreenRoot
 import de.mindmarket.ivyleemaster.task.presentation.TaskScreenRoot
+import de.mindmarket.ivyleemaster.task.presentation.TaskViewModel
 import de.mindmarket.ivyleemaster.util.presentation.Destination
 import org.koin.androidx.compose.koinViewModel
 
@@ -111,7 +111,13 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
         startDestination = Destination.Task
     ) {
         composable<Destination.Task> {
-            TaskScreenRoot()
+            val viewModel = koinViewModel<TaskViewModel>()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+
+            TaskScreenRoot(
+                state = state,
+                onAction = viewModel::onAction
+            )
         }
         composable<Destination.Idea> {
             val viewModel = koinViewModel<IdeaViewModel>()
@@ -120,7 +126,6 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
             // updating list after coming back from add idea screen..
             val backStackEntryResult by navController.currentBackStackEntryAsState()
             val result = backStackEntryResult?.savedStateHandle?.getLiveData<Boolean>("invalidate")
-
 //                    ?.savedStateHandle
 //                ?.getLiveData<Boolean>("invalidate")?.observe()
 
@@ -151,6 +156,7 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
 sealed class Screen(val destination: Any, val label: String, val icon: ImageVector) {
     data object Task :
         Screen(destination = Destination.Task, label = "Home", icon = Icons.Default.Home)
+
     data object Idea :
         Screen(
             destination = Destination.Idea,

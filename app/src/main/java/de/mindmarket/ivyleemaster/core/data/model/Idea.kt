@@ -13,7 +13,7 @@ data class Idea(
     val mainTopic: IdeaId? = null,
     val urgent: Boolean = false,
     val repeatable: Boolean = false,
-    val status: Status = Status.OPEN,
+    val status: Status = Status.DRAFT,
     val cancelReason: String? = null
 ) {
     companion object {
@@ -41,9 +41,6 @@ enum class Type {
 }
 
 enum class Status {
-    OPEN,
-    IN_PROGRESS,
-    DONE,
-    CANCELLED,
-    UNDEFINED
+    DRAFT,
+    READY
 }

@@ -1,6 +1,7 @@
 package de.mindmarket.ivyleemaster.core.presentation.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,9 +30,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import de.mindmarket.ivyleemaster.R
-import de.mindmarket.ivyleemaster.add_idea.presentation.AddIdeaAction
 import de.mindmarket.ivyleemaster.core.domain.model.Genre
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
+import de.mindmarket.ivyleemaster.core.domain.model.Status
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaAction
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
 
@@ -50,13 +51,16 @@ fun IvyIdeaItem(
         ),
         modifier = modifier
             .fillMaxWidth()
+            .clickable {
+
+            }
             .height(220.dp)
             .padding(8.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(16.dp),
+                .padding(2.dp),
         ) {
             Row(
                 modifier = Modifier
@@ -87,9 +91,19 @@ fun IvyIdeaItem(
 
                 }
                 Button(
-                    onClick = { onAction(IdeaAction.OnMoveToTasksClick(idea)) },
+                    onClick = {
+                        if (idea.status == Status.DRAFT) {
+                            onAction(IdeaAction.OnMarkAsReadyClick(idea))
+                        } else {
+                            onAction(IdeaAction.OnMoveToTasksClick(idea))
+                        }
+                    },
                 ) {
-                    Text(stringResource(R.string.idea_item_move_button_text))
+                    if (idea.status == Status.DRAFT) {
+                        Text(stringResource(R.string.idea_item_mark_ready_button_text))
+                    } else {
+                        Text(stringResource(R.string.idea_item_move_button_text))
+                    }
                 }
             }
 
@@ -112,12 +126,12 @@ fun IvyIdeaItem(
             ) {
                 if (idea.isRepeatable) {
                     AssistChip(
-                        label = { Text(text = stringResource(R.string.card_item_repetable_text)) },
+                        label = { Text(text = stringResource(R.string.card_item_repeatable_text)) },
                         leadingIcon = {
                             Icon(
                                 imageVector = Icons.Filled.Share,
                                 modifier = Modifier.size(16.dp),
-                                contentDescription = stringResource(R.string.card_item_repetable_text)
+                                contentDescription = stringResource(R.string.card_item_repeatable_text)
                             )
                         },
                         onClick = {}

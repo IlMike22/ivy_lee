@@ -54,15 +54,18 @@
     <string name="add_idea_validation_genre_missing">You need to define a genre</string>
 
     <!-- status -->
+    <string name="idea_status_draft">Draft</string>
+    <string name="idea_status_ready">Ready</string>
     <string name="status_title_open">Open</string>
     <string name="status_title_in_progress">In Progress</string>
     <string name="status_title_done">Done</string>
     <string name="status_title_cancelled">Cancelled</string>
     <string name="status_title_undefined">Undefined</string>
-    <string name="card_item_repetable_text">repeatable</string>
+    <string name="card_item_repeatable_text">repeatable</string>
     <string name="card_item_urgent_text">urgent</string>
     <string name="idea_error_loading_ideas">Ideas could not be loaded. There was a loading error. Please try again.</string>
-    <string name="idea_item_move_button_text">Move</string>
+    <string name="idea_item_move_button_text">Move to tasks</string>
+    <string name="idea_item_mark_ready_button_text">Mark as ready</string>
 
 
 </resources>

@@ -7,11 +7,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Warning
@@ -30,7 +27,7 @@ data class Idea(
     val mainTopic: IdeaId? = null,
     val isUrgent: Boolean = false,
     val isRepeatable: Boolean = false,
-    val status: Status = Status.OPEN,
+    val status: Status = Status.DRAFT,
     val cancelReason: String? = null
 ) {
     companion object {
@@ -80,22 +77,12 @@ data class Status(
     val id: StatusId
 ) {
     companion object {
-        val OPEN = Status(R.string.status_title_open, Icons.Filled.DateRange, StatusId.OPEN)
-        val IN_PROGRESS =
-            Status(R.string.status_title_open, Icons.Filled.Build, StatusId.IN_PROGRESS)
-        val DONE = Status(R.string.status_title_done, Icons.Filled.Done, StatusId.DONE)
-        val CANCELLED =
-            Status(R.string.status_title_cancelled, Icons.Filled.Delete, StatusId.CANCELLED)
-        val UNDEFINED =
-            Status(R.string.status_title_undefined, Icons.Filled.Lock, StatusId.UNDEFINED)
-
+        val DRAFT = Status(R.string.idea_status_draft, Icons.Filled.DateRange, StatusId.DRAFT)
+        val READY = Status(R.string.idea_status_ready, Icons.Filled.DateRange, StatusId.READY)
     }
 }
 
 enum class StatusId {
-    OPEN,
-    IN_PROGRESS,
-    DONE,
-    CANCELLED,
-    UNDEFINED
+    DRAFT,
+    READY
 }

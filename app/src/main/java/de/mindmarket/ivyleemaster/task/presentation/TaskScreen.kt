@@ -2,11 +2,16 @@
 
 package de.mindmarket.ivyleemaster.task.presentation
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -18,18 +23,19 @@ import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.core.presentation.GradientBackground
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyToolbar
 import de.mindmarket.ivyleemaster.core.presentation.util.DropDownItem
+import de.mindmarket.ivyleemaster.ui.theme.EyesOpen
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
 import de.mindmarket.ivyleemaster.ui.theme.IvyLogo
 import de.mindmarket.ivyleemaster.ui.theme.Settings
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun TaskScreenRoot(
-    viewModel: TaskViewModel = koinViewModel()
+    state: TaskState,
+    onAction: (TaskAction) -> Unit
 ) {
     TaskScreen(
-        state = viewModel.state,
-        onAction = viewModel::onAction
+        state = state,
+        onAction = onAction
     )
 }
 
@@ -73,7 +79,26 @@ fun TaskScreen(
                 )
             },
             content = { padding ->
-
+                LazyColumn(
+                    modifier = Modifier.padding(padding)
+                ) {
+                    items(state.tasks) { task ->
+                        ListItem(
+                            headlineContent = {
+                                Text(text = task.title)
+                            },
+                            supportingContent = {
+                                Text(text = task.description)
+                            },
+                            leadingContent = {
+                                Icon(
+                                    imageVector = EyesOpen,
+                                    contentDescription = null
+                                )
+                            }
+                        )
+                    }
+                }
             }
         )
     }

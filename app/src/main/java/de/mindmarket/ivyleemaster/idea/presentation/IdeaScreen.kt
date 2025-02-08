@@ -1,7 +1,6 @@
 package de.mindmarket.ivyleemaster.idea.presentation
 
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -44,13 +43,12 @@ import org.koin.androidx.compose.koinViewModel
 fun IdeaScreenRoot(
     state: IdeaState,
     onAction: (IdeaAction) -> Unit,
-    viewModel: IdeaViewModel = koinViewModel(),
     onAddIdeaClick: () -> Unit,
     invalidateList: LiveData<Boolean>? = null
 ) {
     IdeaScreen(
         state = state,
-        onAction = viewModel::onAction,
+        onAction = onAction,
         onAddIdeaClick = onAddIdeaClick,
         invalidateList = invalidateList?.value ?: false
     )

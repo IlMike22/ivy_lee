@@ -10,6 +10,9 @@ import de.mindmarket.ivyleemaster.core.domain.model.GenreId.FINANCE
 import de.mindmarket.ivyleemaster.core.domain.model.GenreId.FITTNESS
 import de.mindmarket.ivyleemaster.core.domain.model.GenreId.RELATIONSHIP
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
+import de.mindmarket.ivyleemaster.core.domain.model.Status.Companion.DRAFT
+import de.mindmarket.ivyleemaster.core.domain.model.Status.Companion.READY
+import de.mindmarket.ivyleemaster.task.domain.Task
 
 typealias IdeaData = de.mindmarket.ivyleemaster.core.data.model.Idea
 typealias GenreData = de.mindmarket.ivyleemaster.core.data.model.Genre
@@ -43,7 +46,10 @@ fun de.mindmarket.ivyleemaster.core.data.model.Genre.toDomainGenre() =
     Genre.FITTNESS // TODO continue with mapper
 
 fun Status.toDomainStatus() =
-    de.mindmarket.ivyleemaster.core.domain.model.Status.OPEN // TODO continue with mapper
+    when (this) {
+        Status.DRAFT -> DRAFT
+        Status.READY -> READY
+    }
 
 fun Genre.toGenreData() =
     when (this.id) {
@@ -53,5 +59,40 @@ fun Genre.toGenreData() =
         BUSINESS -> GenreData.BUSINESS
         else -> GenreData.UNDEFINED
     }
+
+fun Task.toTaskData():de.mindmarket.ivyleemaster.task.data.Task =
+    de.mindmarket.ivyleemaster.task.data.Task(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        status = this.status.toStatusData()
+    )
+
+fun de.mindmarket.ivyleemaster.task.domain.Status.toStatusData():de.mindmarket.ivyleemaster.task.data.Status =
+    when (this) {
+        de.mindmarket.ivyleemaster.task.domain.Status.OPEN -> de.mindmarket.ivyleemaster.task.data.Status.OPEN
+        de.mindmarket.ivyleemaster.task.domain.Status.IN_PROGRESS -> de.mindmarket.ivyleemaster.task.data.Status.IN_PROGRESS
+        de.mindmarket.ivyleemaster.task.domain.Status.DONE -> de.mindmarket.ivyleemaster.task.data.Status.DONE
+        de.mindmarket.ivyleemaster.task.domain.Status.OVERDRAWN -> de.mindmarket.ivyleemaster.task.data.Status.OVERDRAWN
+        de.mindmarket.ivyleemaster.task.domain.Status.UNDEFINED -> de.mindmarket.ivyleemaster.task.data.Status.UNDEFINED
+    }
+
+fun de.mindmarket.ivyleemaster.task.data.Task.toDomainTask():Task =
+    Task(
+        id = this.id,
+        title = this.title,
+        description = this.description,
+        status = this.status.toDomainStatus()
+    )
+
+fun de.mindmarket.ivyleemaster.task.data.Status.toDomainStatus():de.mindmarket.ivyleemaster.task.domain.Status =
+    when (this) {
+        de.mindmarket.ivyleemaster.task.data.Status.OPEN -> de.mindmarket.ivyleemaster.task.domain.Status.OPEN
+        de.mindmarket.ivyleemaster.task.data.Status.IN_PROGRESS ->  de.mindmarket.ivyleemaster.task.domain.Status.IN_PROGRESS
+        de.mindmarket.ivyleemaster.task.data.Status.DONE ->  de.mindmarket.ivyleemaster.task.domain.Status.DONE
+        de.mindmarket.ivyleemaster.task.data.Status.OVERDRAWN ->  de.mindmarket.ivyleemaster.task.domain.Status.OVERDRAWN
+        de.mindmarket.ivyleemaster.task.data.Status.UNDEFINED ->  de.mindmarket.ivyleemaster.task.domain.Status.UNDEFINED
+    }
+
 
 

@@ -78,7 +78,6 @@ class AddIdeaViewModel(
         }
     }
 
-
     private fun validateNewIdea(): ValidationState {
         return when {
             _state.value.title.text.toString().isBlank() -> ValidationState.TitleMissing
