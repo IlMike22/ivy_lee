@@ -23,7 +23,6 @@ import de.mindmarket.ivyleemaster.auth.login.presentation.LoginScreenRoot
 import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterScreenRoot
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyBottomAppBar
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaScreenRoot
-import de.mindmarket.ivyleemaster.idea.presentation.IdeaViewModel
 import de.mindmarket.ivyleemaster.settings.SettingsScreenRoot
 import de.mindmarket.ivyleemaster.task.presentation.TaskScreenRoot
 import de.mindmarket.ivyleemaster.task.presentation.TaskViewModel
@@ -36,6 +35,8 @@ fun NavigationRoot(
     isUserLoggedIn: Boolean,
     onLoginSuccess: () -> Unit
 ) {
+    val isRefreshUI = false
+
     Scaffold(
         bottomBar = {
             IvyBottomAppBar(
@@ -110,30 +111,37 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
     navigation<Destination.Home>(
         startDestination = Destination.Task
     ) {
+        /**
+         * Handle refresh mechanism here. Whenever an idea was moved to task screen
+         * the task screen needs to be refreshed to get the new data.
+         * TODO MIC Does not work!
+         */
+        var isRefreshTaskScreen = false
+
         composable<Destination.Task> {
             val viewModel = koinViewModel<TaskViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             TaskScreenRoot(
                 state = state,
-                onAction = viewModel::onAction
+                onAction = viewModel::onAction,
+                isRefresh = isRefreshTaskScreen
             )
         }
         composable<Destination.Idea> {
-            val viewModel = koinViewModel<IdeaViewModel>()
-            val state by viewModel.state.collectAsStateWithLifecycle()
-
             // updating list after coming back from add idea screen..
             val backStackEntryResult by navController.currentBackStackEntryAsState()
             val result = backStackEntryResult?.savedStateHandle?.getLiveData<Boolean>("invalidate")
-//                    ?.savedStateHandle
-//                ?.getLiveData<Boolean>("invalidate")?.observe()
 
             IdeaScreenRoot(
-                state = state,
-                onAction = viewModel::onAction,
                 onAddIdeaClick = {
                     navController.navigate(Destination.AddIdea)
+                },
+                onRefreshUI = {
+                    println("!! setting onRefreshUI flag to set savedStateHandle in IdeaScreenRoot")
+                    // TODO MIC this seems to be not the right approach with that local var flag
+                    // TODO MIC we are coming here but changing the flag here does not do anything
+                    isRefreshTaskScreen = true
                 },
                 invalidateList = result
             )
@@ -154,15 +162,12 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
 }
 
 sealed class Screen(val destination: Any, val label: String, val icon: ImageVector) {
-    data object Task :
-        Screen(destination = Destination.Task, label = "Home", icon = Icons.Default.Home)
-
-    data object Idea :
-        Screen(
+    data object Task : Screen(destination = Destination.Task, label = "Home", icon = Icons.Default.Home)
+    data object Idea : Screen(
             destination = Destination.Idea,
             label = "Idea Pool",
             icon = Icons.Default.ShoppingCart
-        )
+    )
 
     data object Settings :
         Screen(

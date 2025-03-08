@@ -24,6 +24,7 @@ import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,24 +32,48 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.core.presentation.GradientBackground
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyFloatingActionButton
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyIdeaItem
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun IdeaScreenRoot(
-    state: IdeaState,
-    onAction: (IdeaAction) -> Unit,
+    viewModel: IdeaViewModel = koinViewModel(),
     onAddIdeaClick: () -> Unit,
+    onRefreshUI: () -> Unit,
     invalidateList: LiveData<Boolean>? = null
 ) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    val lifeCycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(viewModel.events, lifeCycleOwner.lifecycle) {
+        lifeCycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            withContext(Dispatchers.Main.immediate) {
+                viewModel.events.collect { event ->
+                    when (event) {
+                        IdeaEvent.OnTriggerRefreshUI -> {
+                            println("!! refresh triggered in IdeaScreen!")
+                            onRefreshUI()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     IdeaScreen(
         state = state,
-        onAction = onAction,
+        onAction = viewModel::onAction,
         onAddIdeaClick = onAddIdeaClick,
         invalidateList = invalidateList?.value ?: false
     )

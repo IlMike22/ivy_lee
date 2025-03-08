@@ -6,6 +6,7 @@ import de.mindmarket.ivyleemaster.task.data.Task
 import de.mindmarket.ivyleemaster.util.domain.DataError
 import de.mindmarket.ivyleemaster.util.domain.EmptyResult
 import de.mindmarket.ivyleemaster.util.domain.Result
+import kotlinx.coroutines.flow.Flow
 
 interface IdeaRepository {
     suspend fun getIdeas(userId: String): Result<List<de.mindmarket.ivyleemaster.core.data.model.Idea>, DataError.Network>
@@ -14,4 +15,7 @@ interface IdeaRepository {
 
     suspend fun addTask(task: Task, userId: String): EmptyResult<DataError>
     suspend fun getTasks(userId: String): Result<List<Task>, DataError.Network>
+
+    fun getDatasetUpdate(userId:String)
+    fun getLatestTasksFromLocal(): Flow<List<Task>>
 }

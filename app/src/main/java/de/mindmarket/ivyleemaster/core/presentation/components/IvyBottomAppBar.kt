@@ -12,17 +12,17 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import de.mindmarket.ivyleemaster.Screen
-import de.mindmarket.ivyleemaster.util.presentation.Destination
 
 @Composable
 fun IvyBottomAppBar(
     screens: List<Screen>,
     navController: NavController,
-    isVisible:Boolean,
+    isVisible: Boolean,
     modifier: Modifier = Modifier
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+
 
     if (isVisible) {
         BottomAppBar(

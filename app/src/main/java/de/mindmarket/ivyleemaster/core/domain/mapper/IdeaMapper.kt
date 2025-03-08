@@ -68,13 +68,13 @@ fun Task.toTaskData():de.mindmarket.ivyleemaster.task.data.Task =
         status = this.status.toStatusData()
     )
 
-fun de.mindmarket.ivyleemaster.task.domain.Status.toStatusData():de.mindmarket.ivyleemaster.task.data.Status =
+fun de.mindmarket.ivyleemaster.task.domain.Status.toStatusData():String =
     when (this) {
-        de.mindmarket.ivyleemaster.task.domain.Status.OPEN -> de.mindmarket.ivyleemaster.task.data.Status.OPEN
-        de.mindmarket.ivyleemaster.task.domain.Status.IN_PROGRESS -> de.mindmarket.ivyleemaster.task.data.Status.IN_PROGRESS
-        de.mindmarket.ivyleemaster.task.domain.Status.DONE -> de.mindmarket.ivyleemaster.task.data.Status.DONE
-        de.mindmarket.ivyleemaster.task.domain.Status.OVERDRAWN -> de.mindmarket.ivyleemaster.task.data.Status.OVERDRAWN
-        de.mindmarket.ivyleemaster.task.domain.Status.UNDEFINED -> de.mindmarket.ivyleemaster.task.data.Status.UNDEFINED
+        de.mindmarket.ivyleemaster.task.domain.Status.OPEN -> "OPEN"
+        de.mindmarket.ivyleemaster.task.domain.Status.IN_PROGRESS -> "IN_PROGRESS"
+        de.mindmarket.ivyleemaster.task.domain.Status.DONE -> "DONE"
+        de.mindmarket.ivyleemaster.task.domain.Status.OVERDRAWN -> "OVERDRAWN"
+        de.mindmarket.ivyleemaster.task.domain.Status.UNDEFINED -> "UNDEFINED"
     }
 
 fun de.mindmarket.ivyleemaster.task.data.Task.toDomainTask():Task =
@@ -85,14 +85,15 @@ fun de.mindmarket.ivyleemaster.task.data.Task.toDomainTask():Task =
         status = this.status.toDomainStatus()
     )
 
-fun de.mindmarket.ivyleemaster.task.data.Status.toDomainStatus():de.mindmarket.ivyleemaster.task.domain.Status =
+fun String.toDomainStatus():de.mindmarket.ivyleemaster.task.domain.Status =
     when (this) {
-        de.mindmarket.ivyleemaster.task.data.Status.OPEN -> de.mindmarket.ivyleemaster.task.domain.Status.OPEN
-        de.mindmarket.ivyleemaster.task.data.Status.IN_PROGRESS ->  de.mindmarket.ivyleemaster.task.domain.Status.IN_PROGRESS
-        de.mindmarket.ivyleemaster.task.data.Status.DONE ->  de.mindmarket.ivyleemaster.task.domain.Status.DONE
-        de.mindmarket.ivyleemaster.task.data.Status.OVERDRAWN ->  de.mindmarket.ivyleemaster.task.domain.Status.OVERDRAWN
-        de.mindmarket.ivyleemaster.task.data.Status.UNDEFINED ->  de.mindmarket.ivyleemaster.task.domain.Status.UNDEFINED
+        "OPEN" -> de.mindmarket.ivyleemaster.task.domain.Status.OPEN
+        "IN_PROGRESS" ->  de.mindmarket.ivyleemaster.task.domain.Status.IN_PROGRESS
+        "DONE" ->  de.mindmarket.ivyleemaster.task.domain.Status.DONE
+        "OVERDRAWN" ->  de.mindmarket.ivyleemaster.task.domain.Status.OVERDRAWN
+        else ->  de.mindmarket.ivyleemaster.task.domain.Status.UNDEFINED
     }
+
 
 
 

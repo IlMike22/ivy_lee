@@ -7,6 +7,7 @@ import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
 import de.mindmarket.ivyleemaster.util.domain.DataError
 import de.mindmarket.ivyleemaster.util.domain.EmptyResult
 import de.mindmarket.ivyleemaster.util.domain.Result
+import kotlinx.coroutines.flow.Flow
 
 class IvyTaskRepository(
     private val remoteDataSource: IvyTaskRemoteDataSource,
@@ -29,5 +30,13 @@ class IvyTaskRepository(
 
     override suspend fun getTasks(userId: String): Result<List<Task>, DataError.Network> {
         return remoteDataSource.getTasks(userId)
+    }
+
+    override fun getDatasetUpdate(userId:String) {
+        return remoteDataSource.getDataSetUpdate(userId)
+    }
+
+    override fun getLatestTasksFromLocal(): Flow<List<Task>> {
+        return remoteDataSource.getLatestTasksFromLocal()
     }
 }
