@@ -43,14 +43,14 @@ class TaskViewModel(
                 is Result.Error -> _state.update {
                     it.copy(
                         tasks = emptyList(),
-                        isLoadingError = true
+                        isError = true
                     )
                 }
 
                 is Result.Success -> _state.update {
                     it.copy(
                         tasks = result.data.map { it.toDomainTask() },
-                        isLoadingError = false
+                        isError = false
                     )
                 }
             }
@@ -76,17 +76,36 @@ class TaskViewModel(
             TaskAction.OnBackClick -> TODO()
             TaskAction.OnRefresh -> {
                 viewModelScope.launch {
+                    _state.update { it.copy(isLoading = true) }
+
                     val result = repository.getTasks(userId)
                     when (result) {
-                        is Result.Error -> {}
+                        is Result.Error -> {
+                            _state.update {
+                                it.copy(
+                                    isLoading = false,
+                                    isError = true,
+                                    tasks = emptyList()
+                                )
+                            }
+                        }
+
                         is Result.Success -> {
-                            _state.update { it.copy(tasks = result.data.map { it.toDomainTask() }) }
+                            _state.update {
+                                it.copy(
+                                    tasks = result.data.map { it.toDomainTask() },
+                                    isError = false,
+                                    isLoading = false
+                                )
+                            }
                         }
                     }
                 }
             }
+
             TaskAction.OnSettingsClick -> TODO()
             TaskAction.OnTaskCompleteClick -> TODO()
+            else -> Unit
         }
     }
 

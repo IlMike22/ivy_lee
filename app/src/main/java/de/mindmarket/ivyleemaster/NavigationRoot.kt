@@ -24,6 +24,7 @@ import de.mindmarket.ivyleemaster.auth.register.presentation.RegisterScreenRoot
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyBottomAppBar
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaScreenRoot
 import de.mindmarket.ivyleemaster.settings.SettingsScreenRoot
+import de.mindmarket.ivyleemaster.task.presentation.TaskAction
 import de.mindmarket.ivyleemaster.task.presentation.TaskScreenRoot
 import de.mindmarket.ivyleemaster.task.presentation.TaskViewModel
 import de.mindmarket.ivyleemaster.util.presentation.Destination
@@ -33,10 +34,10 @@ import org.koin.androidx.compose.koinViewModel
 fun NavigationRoot(
     navController: NavHostController,
     isUserLoggedIn: Boolean,
-    onLoginSuccess: () -> Unit
+    onLoginSuccess: () -> Unit,
+    isRefreshUI: Boolean,
+    onRefreshUI: (Boolean) -> Unit
 ) {
-    val isRefreshUI = false
-
     Scaffold(
         bottomBar = {
             IvyBottomAppBar(
@@ -48,7 +49,6 @@ fun NavigationRoot(
                 ),
                 navController = navController
             )
-
         }
     ) { padding ->
         NavHost(
@@ -57,7 +57,9 @@ fun NavigationRoot(
             modifier = Modifier.padding(padding)
         ) {
             authGraph(navController, onLoginSuccess)
-            mainGraph(navController)
+            mainGraph(navController, isRefreshUI) { isRefreshUi ->
+                onRefreshUI(isRefreshUi)
+            }
         }
     }
 }
@@ -107,29 +109,32 @@ private fun NavGraphBuilder.authGraph(
     }
 }
 
-private fun NavGraphBuilder.mainGraph(navController: NavController) {
+private fun NavGraphBuilder.mainGraph(
+    navController: NavController,
+    isRefreshUI: Boolean,
+    onRefreshUI: (Boolean) -> Unit,
+) {
     navigation<Destination.Home>(
         startDestination = Destination.Task
     ) {
-        /**
-         * Handle refresh mechanism here. Whenever an idea was moved to task screen
-         * the task screen needs to be refreshed to get the new data.
-         * TODO MIC Does not work!
-         */
-        var isRefreshTaskScreen = false
-
         composable<Destination.Task> {
+            println("!! MainGraph:  onRefreshUI is $isRefreshUI")
             val viewModel = koinViewModel<TaskViewModel>()
             val state by viewModel.state.collectAsStateWithLifecycle()
 
             TaskScreenRoot(
                 state = state,
-                onAction = viewModel::onAction,
-                isRefresh = isRefreshTaskScreen
+                onAction = { action ->
+                    when (action) {
+                        TaskAction.ResetRefresh -> onRefreshUI(false)
+                        else -> viewModel.onAction(action)
+                    }
+                },
+                isRefreshUi = isRefreshUI
             )
         }
         composable<Destination.Idea> {
-            // updating list after coming back from add idea screen..
+            // updating list after coming back from addIdea screen..
             val backStackEntryResult by navController.currentBackStackEntryAsState()
             val result = backStackEntryResult?.savedStateHandle?.getLiveData<Boolean>("invalidate")
 
@@ -137,11 +142,8 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
                 onAddIdeaClick = {
                     navController.navigate(Destination.AddIdea)
                 },
-                onRefreshUI = {
-                    println("!! setting onRefreshUI flag to set savedStateHandle in IdeaScreenRoot")
-                    // TODO MIC this seems to be not the right approach with that local var flag
-                    // TODO MIC we are coming here but changing the flag here does not do anything
-                    isRefreshTaskScreen = true
+                isRefreshUI = {
+                    onRefreshUI(true)
                 },
                 invalidateList = result
             )
@@ -162,11 +164,16 @@ private fun NavGraphBuilder.mainGraph(navController: NavController) {
 }
 
 sealed class Screen(val destination: Any, val label: String, val icon: ImageVector) {
-    data object Task : Screen(destination = Destination.Task, label = "Home", icon = Icons.Default.Home)
+    data object Task : Screen(
+        destination = Destination.Task,
+        label = "Home",
+        icon = Icons.Default.Home
+    )
+
     data object Idea : Screen(
-            destination = Destination.Idea,
-            label = "Idea Pool",
-            icon = Icons.Default.ShoppingCart
+        destination = Destination.Idea,
+        label = "Idea Pool",
+        icon = Icons.Default.ShoppingCart
     )
 
     data object Settings :

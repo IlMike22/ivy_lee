@@ -67,5 +67,8 @@
     <string name="idea_item_move_button_text">Move to tasks</string>
     <string name="idea_item_mark_ready_button_text">Mark as ready</string>
 
+    <!--Task -->
+    <string name="ivy_lee_task_loading_error_text">An error occurred while loading the data. Please try again.</string>
+
 
 </resources>

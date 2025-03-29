@@ -2,18 +2,14 @@ package de.mindmarket.ivyleemaster.idea.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import de.mindmarket.ivyleemaster.add_idea.presentation.AddIdeaEvent
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
-import de.mindmarket.ivyleemaster.core.domain.mapper.toIdeaData
 import de.mindmarket.ivyleemaster.core.domain.mapper.toIdeaDomain
 import de.mindmarket.ivyleemaster.core.domain.mapper.toTaskData
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
 import de.mindmarket.ivyleemaster.core.domain.model.Status
 import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
 import de.mindmarket.ivyleemaster.task.domain.Task
-import de.mindmarket.ivyleemaster.util.domain.EmptyResult
 import de.mindmarket.ivyleemaster.util.domain.Result
-import kotlinx.coroutines.async
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -69,7 +65,7 @@ class IdeaViewModel(
         }
     }
 
-    private fun moveIdeaToTask(idea:Idea) {
+    private fun moveIdeaToTask(idea: Idea) {
         viewModelScope.launch {
             userId?.apply {
                 repository.deleteIdea(idea.id, this)
@@ -86,7 +82,6 @@ class IdeaViewModel(
                     eventChannel.send(IdeaEvent.OnTriggerRefreshUI)
                 }
                 // TODO if adding was not successful, handle error case here as well
-
             }
         }
     }

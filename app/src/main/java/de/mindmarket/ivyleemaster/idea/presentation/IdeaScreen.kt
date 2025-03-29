@@ -50,7 +50,7 @@ import org.koin.androidx.compose.koinViewModel
 fun IdeaScreenRoot(
     viewModel: IdeaViewModel = koinViewModel(),
     onAddIdeaClick: () -> Unit,
-    onRefreshUI: () -> Unit,
+    isRefreshUI: (Boolean) -> Unit,
     invalidateList: LiveData<Boolean>? = null
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -62,8 +62,7 @@ fun IdeaScreenRoot(
                 viewModel.events.collect { event ->
                     when (event) {
                         IdeaEvent.OnTriggerRefreshUI -> {
-                            println("!! refresh triggered in IdeaScreen!")
-                            onRefreshUI()
+                            isRefreshUI(true)
                         }
                     }
                 }
@@ -84,8 +83,8 @@ fun IdeaScreen(
     state: IdeaState,
     onAction: (IdeaAction) -> Unit,
     onAddIdeaClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    invalidateList: Boolean
+    invalidateList: Boolean,
+    modifier: Modifier = Modifier
 ) {
 
     if (invalidateList) {
@@ -129,10 +128,11 @@ fun IdeaScreen(
                                 onEdit = {
                                     onAction(IdeaAction.OnIdeaEditClick(idea))
                                 },
-                                modifier = Modifier.animateItem(
-                                    fadeInSpec = null,
-                                    fadeOutSpec = null
-                                )
+                                modifier = Modifier
+                                    .animateItem(
+                                        fadeInSpec = null,
+                                        fadeOutSpec = null
+                                    )
                                     .padding(8.dp)
                             ) {
                                 IvyIdeaItem(idea = idea, onAction = onAction)

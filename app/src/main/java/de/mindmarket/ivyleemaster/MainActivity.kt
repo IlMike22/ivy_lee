@@ -29,6 +29,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     val viewModel = koinViewModel<MainViewModel>()
+                    val isRefreshUI by viewModel.isRefreshUI.collectAsStateWithLifecycle()
                     val isUserLoggedIn by viewModel.isUserLoggedIn.collectAsStateWithLifecycle()
 
                     NavigationRoot(
@@ -36,6 +37,10 @@ class MainActivity : ComponentActivity() {
                         isUserLoggedIn,
                         onLoginSuccess = {
                             viewModel.checkLoginState()
+                        },
+                        isRefreshUI = isRefreshUI,
+                        onRefreshUI = { refreshUI ->
+                            viewModel.setRefreshUIState(refreshUI)
                         }
                     )
                 }

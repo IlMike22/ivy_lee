@@ -4,7 +4,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.getValue
 import de.mindmarket.ivyleemaster.core.data.model.Idea
 import de.mindmarket.ivyleemaster.core.domain.mapper.IdeaData
 import de.mindmarket.ivyleemaster.util.domain.DataError
@@ -80,7 +79,7 @@ class IvyTaskRemoteDataSource(
                 }
         }
 
-    suspend fun addTask(task: Task, userId:String): EmptyResult<DataError> =
+    suspend fun addTask(task: Task, userId: String): EmptyResult<DataError> =
         suspendCoroutine { continuation ->
             firebaseDatabase
                 .child(FIREBASE_TABLE_TASK)
@@ -121,11 +120,10 @@ class IvyTaskRemoteDataSource(
                 }
         }
 
-    fun getDataSetUpdate(userId:String) {
+    fun getDataSetUpdate(userId: String) {
         val tasks = mutableListOf<Task>()
-        val onChangedListener = object:ValueEventListener {
+        val onChangedListener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                println("!! data changed trigger triggered!")
                 try {
                     for (singleDataSet in snapshot.children) {
                         singleDataSet.getValue(Task::class.java)?.apply {
@@ -135,7 +133,7 @@ class IvyTaskRemoteDataSource(
                     fetchedTasks = flow {
                         emit(tasks)
                     }
-                } catch (exception:Exception) {
+                } catch (exception: Exception) {
                     println("!! error occurred when updating task list.")
                     fetchedTasks = flow {
                         emit(emptyList())
