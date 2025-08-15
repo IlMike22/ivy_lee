@@ -56,11 +56,13 @@ class IdeaViewModel(
             is IdeaAction.OnIdeaEditClick -> TODO()
             is IdeaAction.OnMoveToTasksClick -> moveIdeaToTask(action.idea)
             is IdeaAction.OnMarkAsReadyClick -> {
-                val oldIdea = _state.value.ideas.first { it.id == action.idea.id }
-                val newIdea = oldIdea.copy(
-                    status = Status.READY
-                )
-                _state.update { it.copy(ideas = _state.value.ideas - oldIdea + newIdea) }
+                // TODO MIC here the logic is not 100% correct. So idea state will not be updated
+                // like I want. We remove the old idea and add a new idea with new status.
+                // But how should the current idea state then change the button behavior in the UI?
+                val currentIdea = _state.value.ideas.first { it.id == action.idea.id }
+                val updatedIdea = currentIdea.copy(status = Status.READY)
+                val ideas = _state.value.ideas - currentIdea + updatedIdea
+                _state.update { it.copy(ideas = ideas) }
             }
         }
     }
