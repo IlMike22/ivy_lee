@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
     id("com.google.gms.google-services")
 }
 
@@ -48,6 +50,9 @@ android {
     buildFeatures {
         compose = true
     }
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
@@ -87,7 +92,9 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
 
     // Room
-    implementation(libs.androidx.room.ktx)
+    implementation(libs.room.ktx)
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
 
     // KSP
     compileOnly(libs.ksp.gradlePlugin)

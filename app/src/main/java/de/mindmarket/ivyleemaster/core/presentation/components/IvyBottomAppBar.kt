@@ -23,9 +23,9 @@ fun IvyBottomAppBar(
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-
     if (isVisible) {
         BottomAppBar(
+            modifier = modifier,
             actions = {
                 screens.forEach { screen ->
                     NavigationBarItem(

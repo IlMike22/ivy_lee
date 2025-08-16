@@ -1,6 +1,5 @@
 package de.mindmarket.ivyleemaster.auth.data.entity
 
-import android.net.Uri
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -12,5 +11,5 @@ data class UserEntity(
     val email:String,
     val isEmailVerified:Boolean,
     val phoneNumber: String? = null,
-    val photoUrl: Uri? = null
+    val photoUrl: String? = null
 )
