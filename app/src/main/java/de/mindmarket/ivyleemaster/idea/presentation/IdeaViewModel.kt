@@ -2,11 +2,11 @@ package de.mindmarket.ivyleemaster.idea.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
 import de.mindmarket.ivyleemaster.core.domain.mapper.toIdeaDomain
 import de.mindmarket.ivyleemaster.core.domain.mapper.toTaskData
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
-import de.mindmarket.ivyleemaster.core.domain.model.Status
 import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
 import de.mindmarket.ivyleemaster.task.domain.Task
 import de.mindmarket.ivyleemaster.util.domain.Result
@@ -55,22 +55,21 @@ class IdeaViewModel(
 
             is IdeaAction.OnIdeaEditClick -> TODO()
             is IdeaAction.OnMoveToTasksClick -> moveIdeaToTask(action.idea)
-            is IdeaAction.OnMarkAsReadyClick -> {
-                // TODO MIC here the logic is not 100% correct. So idea state will not be updated
-                // like I want. We remove the old idea and add a new idea with new status.
-                // But how should the current idea state then change the button behavior in the UI?
-                val currentIdea = _state.value.ideas.first { it.id == action.idea.id }
-                val updatedIdea = currentIdea.copy(status = Status.READY)
-                val ideas = _state.value.ideas - currentIdea + updatedIdea
-                _state.update { it.copy(ideas = ideas) }
-            }
         }
     }
 
     private fun moveIdeaToTask(idea: Idea) {
+        val mutableIdeas = _state.value.ideas.toMutableList()
+
         viewModelScope.launch {
             userId?.apply {
                 repository.deleteIdea(idea.id, this)
+
+                _state.update {
+                    it.copy(
+                        ideas = mutableIdeas.toList()
+                    )
+                }
 
                 val task = Task(
                     id = idea.id,
@@ -81,9 +80,11 @@ class IdeaViewModel(
 
                 val result = repository.addTask(task.toTaskData(), this)
                 if (result !is Result.Error) {
+                    eventChannel.send(IdeaEvent.OnShowSnackbar(R.string.idea_move_to_task_success_message))
                     eventChannel.send(IdeaEvent.OnTriggerRefreshUI)
+                } else {
+                    eventChannel.send(IdeaEvent.OnShowSnackbar(R.string.idea_move_to_task_error_message))
                 }
-                // TODO if adding was not successful, handle error case here as well
             }
         }
     }

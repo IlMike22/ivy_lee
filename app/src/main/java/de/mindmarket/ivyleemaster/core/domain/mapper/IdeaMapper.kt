@@ -10,8 +10,6 @@ import de.mindmarket.ivyleemaster.core.domain.model.GenreId.FINANCE
 import de.mindmarket.ivyleemaster.core.domain.model.GenreId.FITTNESS
 import de.mindmarket.ivyleemaster.core.domain.model.GenreId.RELATIONSHIP
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
-import de.mindmarket.ivyleemaster.core.domain.model.Status.Companion.DRAFT
-import de.mindmarket.ivyleemaster.core.domain.model.Status.Companion.READY
 import de.mindmarket.ivyleemaster.task.domain.Task
 
 typealias IdeaData = de.mindmarket.ivyleemaster.core.data.model.Idea
@@ -38,18 +36,11 @@ fun de.mindmarket.ivyleemaster.core.data.model.Idea.toIdeaDomain() =
         genre = this.genre.toDomainGenre(),
         mainTopic = this.mainTopic,
         isUrgent = this.urgent,
-        isRepeatable = this.repeatable,
-        status = this.status.toDomainStatus()
+        isRepeatable = this.repeatable
     )
 
 fun de.mindmarket.ivyleemaster.core.data.model.Genre.toDomainGenre() =
     Genre.FITTNESS // TODO continue with mapper
-
-fun Status.toDomainStatus() =
-    when (this) {
-        Status.DRAFT -> DRAFT
-        Status.READY -> READY
-    }
 
 fun Genre.toGenreData() =
     when (this.id) {

@@ -69,6 +69,8 @@
 
     <!--Task -->
     <string name="ivy_lee_task_loading_error_text">An error occurred while loading the data. Please try again.</string>
+    <string name="idea_move_to_task_success_message">Idea was successfully moved to task.</string>
+    <string name="idea_move_to_task_error_message">Failed to move idea to task.</string>
 
 
 </resources>

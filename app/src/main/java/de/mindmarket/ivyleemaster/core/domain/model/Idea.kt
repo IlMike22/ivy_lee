@@ -27,7 +27,6 @@ data class Idea(
     val mainTopic: IdeaId? = null,
     val isUrgent: Boolean = false,
     val isRepeatable: Boolean = false,
-    val status: Status = Status.DRAFT,
     val cancelReason: String? = null
 ) {
     companion object {
@@ -69,17 +68,6 @@ enum class GenreId {
 enum class Type {
     IDEA,
     TASK
-}
-
-data class Status(
-    @StringRes val title: Int,
-    val icon: ImageVector,
-    val id: StatusId
-) {
-    companion object {
-        val DRAFT = Status(R.string.idea_status_draft, Icons.Filled.DateRange, StatusId.DRAFT)
-        val READY = Status(R.string.idea_status_ready, Icons.Filled.DateRange, StatusId.READY)
-    }
 }
 
 enum class StatusId {

@@ -1,5 +1,6 @@
 package de.mindmarket.ivyleemaster.idea.presentation
 
+import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -29,9 +30,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.getString
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -55,6 +59,8 @@ fun IdeaScreenRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val lifeCycleOwner = LocalLifecycleOwner.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val context = LocalContext.current
 
     LaunchedEffect(viewModel.events, lifeCycleOwner.lifecycle) {
         lifeCycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
@@ -63,6 +69,15 @@ fun IdeaScreenRoot(
                     when (event) {
                         IdeaEvent.OnTriggerRefreshUI -> {
                             isRefreshUI(true)
+                        }
+
+                        is IdeaEvent.OnShowSnackbar -> {
+                            keyboardController?.hide()
+                            Toast.makeText(
+                                context,
+                                getString(context, event.message),
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     }
                 }
@@ -135,10 +150,13 @@ fun IdeaScreen(
                                     )
                                     .padding(8.dp)
                             ) {
-                                IvyIdeaItem(idea = idea, onAction = onAction)
+                                IvyIdeaItem(
+                                    idea = idea,
+                                    onAction = onAction
+                                )
+
                                 Spacer(Modifier.height(4.dp))
                             }
-
                         }
                     }
                 }

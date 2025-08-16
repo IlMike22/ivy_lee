@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.sp
 import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.core.domain.model.Genre
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
-import de.mindmarket.ivyleemaster.core.domain.model.Status
 import de.mindmarket.ivyleemaster.idea.presentation.IdeaAction
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
 
@@ -80,30 +79,13 @@ fun IvyIdeaItem(
                             contentDescription = null
                         )
                     }
-
-                    Image(
-                        modifier = Modifier
-                            .size(32.dp),
-                        colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary),
-                        imageVector = idea.status.icon,
-                        contentDescription = null
-                    )
-
                 }
                 Button(
                     onClick = {
-                        if (idea.status == Status.DRAFT) {
-                            onAction(IdeaAction.OnMarkAsReadyClick(idea))
-                        } else {
-                            onAction(IdeaAction.OnMoveToTasksClick(idea))
-                        }
+                        onAction(IdeaAction.OnMoveToTasksClick(idea))
                     },
                 ) {
-                    if (idea.status == Status.DRAFT) {
-                        Text(stringResource(R.string.idea_item_mark_ready_button_text))
-                    } else {
-                        Text(stringResource(R.string.idea_item_move_button_text))
-                    }
+                    Text(stringResource(R.string.idea_item_move_button_text))
                 }
             }
 
