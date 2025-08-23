@@ -3,6 +3,7 @@ package de.mindmarket.ivyleemaster.task.data
 import de.mindmarket.ivyleemaster.core.domain.mapper.toIdeaData
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
 import de.mindmarket.ivyleemaster.core.domain.model.IdeaId
+import de.mindmarket.ivyleemaster.core.domain.model.ItemType
 import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
 import de.mindmarket.ivyleemaster.util.domain.DataError
 import de.mindmarket.ivyleemaster.util.domain.EmptyResult
@@ -21,7 +22,7 @@ class IvyTaskRepository(
     }
 
     override suspend fun deleteIdea(ideaId: IdeaId, userId: String): EmptyResult<DataError> {
-        return remoteDataSource.deleteIdea(ideaId, userId)
+        return remoteDataSource.deleteIdeaOrTask(ideaId, userId, ItemType.IDEA)
     }
 
     override suspend fun addTask(task: Task, userId: String): EmptyResult<DataError> {
@@ -30,6 +31,10 @@ class IvyTaskRepository(
 
     override suspend fun getTasks(userId: String): Result<List<Task>, DataError.Network> {
         return remoteDataSource.getTasks(userId)
+    }
+
+    override suspend fun deleteTask(id: String, userId: String): EmptyResult<DataError> {
+        return remoteDataSource.deleteIdeaOrTask(id, userId, ItemType.TASK)
     }
 
     override fun getDatasetUpdate(userId:String) {

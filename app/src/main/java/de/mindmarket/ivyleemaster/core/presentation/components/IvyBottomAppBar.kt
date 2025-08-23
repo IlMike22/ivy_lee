@@ -34,7 +34,7 @@ fun IvyBottomAppBar(
                             if (currentRoute != screen.destination) {
                                 navController.navigate(screen.destination) {
                                     launchSingleTop = true
-                                    restoreState = true
+                                    restoreState = false
                                     popUpTo(navController.graph.startDestinationId) {
                                         saveState = true
                                     }

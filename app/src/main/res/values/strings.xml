@@ -64,13 +64,17 @@
     <string name="card_item_repeatable_text">repeatable</string>
     <string name="card_item_urgent_text">urgent</string>
     <string name="idea_error_loading_ideas">Ideas could not be loaded. There was a loading error. Please try again.</string>
+    <string name="idea_empty_idea_list">No ideas yet. Add button to create some.</string>
     <string name="idea_item_move_button_text">Move to tasks</string>
     <string name="idea_item_mark_ready_button_text">Mark as ready</string>
 
     <!--Task -->
     <string name="ivy_lee_task_loading_error_text">An error occurred while loading the data. Please try again.</string>
+    <string name="task_empty_task_list">No tasks yet. Move ideas first.</string>
     <string name="idea_move_to_task_success_message">Idea was successfully moved to task.</string>
     <string name="idea_move_to_task_error_message">Failed to move idea to task.</string>
+    <string name="task_delete_failed">Deleting task failed unfortunately.</string>
+    <string name="task_delete_success">Task was successfully removed.</string>
 
 
 </resources>

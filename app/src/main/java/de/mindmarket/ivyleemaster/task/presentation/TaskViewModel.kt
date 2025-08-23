@@ -5,10 +5,12 @@ package de.mindmarket.ivyleemaster.task.presentation
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
 import de.mindmarket.ivyleemaster.core.domain.mapper.toDomainTask
 import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
 import de.mindmarket.ivyleemaster.util.domain.Result
+import de.mindmarket.ivyleemaster.util.domain.asEmptyDataResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,8 +29,8 @@ class TaskViewModel(
 
     lateinit var userId: String
 
-    private val eventChannel = Channel<TaskEvent>()
-    val events = eventChannel.receiveAsFlow()
+    private val _eventChannel = Channel<TaskEvent>()
+    val events = _eventChannel.receiveAsFlow()
 
     val tasks = channelFlow {
         repository.getLatestTasksFromLocal().collectLatest {
@@ -56,7 +58,7 @@ class TaskViewModel(
             }
         }
 
-        setupDataChangeListener()
+//        setupDataChangeListener() // TODO needed? since only be called in init does not make much sense...
     }
 
     private fun setupDataChangeListener() {
@@ -64,7 +66,7 @@ class TaskViewModel(
             repository.getDatasetUpdate(userId)
 
             // fetching changed tasks list every time when sth changed and update ui state
-            tasks.collect {
+            tasks.collectLatest {
                 val latestTasks = it
                 _state.update { it.copy(tasks = latestTasks.map { it }) }
             }
@@ -105,8 +107,28 @@ class TaskViewModel(
 
             TaskAction.OnSettingsClick -> TODO()
             TaskAction.OnTaskCompleteClick -> TODO()
-            else -> Unit
+            is TaskAction.OnTaskDeleteClick -> {
+                viewModelScope.launch {
+                    val tasks = _state.value.tasks.toMutableList()
+                    val result = repository.deleteTask(
+                        id = action.id,
+                        userId = userId
+                    )
+
+                    if (result is Result.Error) {
+                        _eventChannel.send(TaskEvent.OnShowDeleteTaskMessage(R.string.task_delete_failed))
+                    } else {
+                        tasks.remove(_state.value.tasks.firstOrNull { it.id == action.id })
+
+                        _state.update {
+                            it.copy(tasks = tasks)
+                        }
+
+                        _eventChannel.send(TaskEvent.OnShowDeleteTaskMessage(R.string.task_delete_success))
+                    }
+                }
+            }
+            TaskAction.ResetRefresh -> Unit
         }
     }
-
 }

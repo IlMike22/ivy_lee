@@ -120,16 +120,8 @@ private fun NavGraphBuilder.mainGraph(
         composable<Destination.Task> {
             println("!! MainGraph:  onRefreshUI is $isRefreshUI")
             val viewModel = koinViewModel<TaskViewModel>()
-            val state by viewModel.state.collectAsStateWithLifecycle()
 
             TaskScreenRoot(
-                state = state,
-                onAction = { action ->
-                    when (action) {
-                        TaskAction.ResetRefresh -> onRefreshUI(false)
-                        else -> viewModel.onAction(action)
-                    }
-                },
                 isRefreshUi = isRefreshUI
             )
         }

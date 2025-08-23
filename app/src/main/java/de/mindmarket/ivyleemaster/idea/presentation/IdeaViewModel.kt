@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.UUID
+import kotlin.random.Random
 
 class IdeaViewModel(
     private val repository: IdeaRepository,
@@ -60,6 +62,7 @@ class IdeaViewModel(
 
     private fun moveIdeaToTask(idea: Idea) {
         val mutableIdeas = _state.value.ideas.toMutableList()
+        mutableIdeas.remove(idea)
 
         viewModelScope.launch {
             userId?.apply {
@@ -72,7 +75,7 @@ class IdeaViewModel(
                 }
 
                 val task = Task(
-                    id = idea.id,
+                    id = UUID.randomUUID().toString(),
                     title = idea.title,
                     description = idea.subtitle,
                     status = de.mindmarket.ivyleemaster.task.domain.Status.OPEN

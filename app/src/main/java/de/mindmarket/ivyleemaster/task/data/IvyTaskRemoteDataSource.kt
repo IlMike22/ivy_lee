@@ -6,6 +6,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import de.mindmarket.ivyleemaster.core.data.model.Idea
 import de.mindmarket.ivyleemaster.core.domain.mapper.IdeaData
+import de.mindmarket.ivyleemaster.core.domain.model.ItemType
 import de.mindmarket.ivyleemaster.util.domain.DataError
 import de.mindmarket.ivyleemaster.util.domain.EmptyResult
 import de.mindmarket.ivyleemaster.util.domain.Result
@@ -61,12 +62,12 @@ class IvyTaskRemoteDataSource(
                 }
         }
 
-    suspend fun deleteIdea(ideaId: String, userId: String) =
+    suspend fun deleteIdeaOrTask(id: String, userId: String, itemType: ItemType) =
         suspendCoroutine { continuation ->
             firebaseDatabase
-                .child(FIREBASE_TABLE_IDEA)
+                .child(if (itemType == ItemType.IDEA) FIREBASE_TABLE_IDEA else FIREBASE_TABLE_TASK)
                 .child(userId)
-                .child(ideaId)
+                .child(id)
                 .removeValue()
                 .addOnCompleteListener {
                     continuation.resume(Result.Success(Unit))

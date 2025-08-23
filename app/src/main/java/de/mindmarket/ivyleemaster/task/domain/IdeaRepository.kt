@@ -15,7 +15,8 @@ interface IdeaRepository {
 
     suspend fun addTask(task: Task, userId: String): EmptyResult<DataError>
     suspend fun getTasks(userId: String): Result<List<Task>, DataError.Network>
+    suspend fun deleteTask(id: String, userId: String): EmptyResult<DataError>
 
-    fun getDatasetUpdate(userId:String)
+    fun getDatasetUpdate(userId: String)
     fun getLatestTasksFromLocal(): Flow<List<Task>>
 }

@@ -27,6 +27,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -122,10 +123,15 @@ fun IdeaScreen(
                 modifier = Modifier
                     .padding(padding)
                     .fillMaxSize()
-
             ) {
                 if (state.isError) {
                     Text(text = stringResource(R.string.idea_error_loading_ideas))
+                } else if (state.ideas.isEmpty()) {
+                    Text(
+                        text = stringResource(R.string.idea_empty_idea_list),
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                    )
                 } else {
                     LazyColumn(
                         modifier = Modifier
