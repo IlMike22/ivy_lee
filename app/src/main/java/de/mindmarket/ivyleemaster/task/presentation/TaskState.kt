@@ -1,6 +1,6 @@
 package de.mindmarket.ivyleemaster.task.presentation
 
-import de.mindmarket.ivyleemaster.task.domain.Task
+import de.mindmarket.ivyleemaster.task.domain.model.Task
 
 data class TaskState(
     val username: String = "",

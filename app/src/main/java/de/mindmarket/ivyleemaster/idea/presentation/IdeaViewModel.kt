@@ -8,7 +8,8 @@ import de.mindmarket.ivyleemaster.core.domain.mapper.toIdeaDomain
 import de.mindmarket.ivyleemaster.core.domain.mapper.toTaskData
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
 import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
-import de.mindmarket.ivyleemaster.task.domain.Task
+import de.mindmarket.ivyleemaster.task.domain.model.Status
+import de.mindmarket.ivyleemaster.task.domain.model.Task
 import de.mindmarket.ivyleemaster.util.domain.Result
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,6 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.UUID
-import kotlin.random.Random
 
 class IdeaViewModel(
     private val repository: IdeaRepository,
@@ -78,7 +78,7 @@ class IdeaViewModel(
                     id = UUID.randomUUID().toString(),
                     title = idea.title,
                     description = idea.subtitle,
-                    status = de.mindmarket.ivyleemaster.task.domain.Status.OPEN
+                    status = Status.OPEN
                 )
 
                 val result = repository.addTask(task.toTaskData(), this)

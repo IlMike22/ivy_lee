@@ -1,5 +1,4 @@
-package de.mindmarket.ivyleemaster.task.domain
-
+package de.mindmarket.ivyleemaster.task.domain.model
 
 data class Task(
     val id: String,

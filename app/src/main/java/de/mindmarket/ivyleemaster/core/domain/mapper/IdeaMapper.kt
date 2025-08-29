@@ -3,14 +3,14 @@
 package de.mindmarket.ivyleemaster.core.domain.mapper
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import de.mindmarket.ivyleemaster.core.data.model.Status
 import de.mindmarket.ivyleemaster.core.domain.model.Genre
 import de.mindmarket.ivyleemaster.core.domain.model.GenreId.BUSINESS
 import de.mindmarket.ivyleemaster.core.domain.model.GenreId.FINANCE
 import de.mindmarket.ivyleemaster.core.domain.model.GenreId.FITTNESS
 import de.mindmarket.ivyleemaster.core.domain.model.GenreId.RELATIONSHIP
 import de.mindmarket.ivyleemaster.core.domain.model.Idea
-import de.mindmarket.ivyleemaster.task.domain.Task
+import de.mindmarket.ivyleemaster.task.domain.model.Status
+import de.mindmarket.ivyleemaster.task.domain.model.Task
 
 typealias IdeaData = de.mindmarket.ivyleemaster.core.data.model.Idea
 typealias GenreData = de.mindmarket.ivyleemaster.core.data.model.Genre
@@ -32,7 +32,7 @@ fun de.mindmarket.ivyleemaster.core.data.model.Idea.toIdeaDomain() =
         id = this.id,
         userId = this.userId,
         title = this.title,
-        subtitle = this.title,
+        subtitle = this.subtitle,
         genre = this.genre.toDomainGenre(),
         mainTopic = this.mainTopic,
         isUrgent = this.urgent,
@@ -59,13 +59,13 @@ fun Task.toTaskData():de.mindmarket.ivyleemaster.task.data.Task =
         status = this.status.toStatusData()
     )
 
-fun de.mindmarket.ivyleemaster.task.domain.Status.toStatusData():String =
+fun Status.toStatusData():String =
     when (this) {
-        de.mindmarket.ivyleemaster.task.domain.Status.OPEN -> "OPEN"
-        de.mindmarket.ivyleemaster.task.domain.Status.IN_PROGRESS -> "IN_PROGRESS"
-        de.mindmarket.ivyleemaster.task.domain.Status.DONE -> "DONE"
-        de.mindmarket.ivyleemaster.task.domain.Status.OVERDRAWN -> "OVERDRAWN"
-        de.mindmarket.ivyleemaster.task.domain.Status.UNDEFINED -> "UNDEFINED"
+        Status.OPEN -> "OPEN"
+        Status.IN_PROGRESS -> "IN_PROGRESS"
+        Status.DONE -> "DONE"
+        Status.OVERDRAWN -> "OVERDRAWN"
+        Status.UNDEFINED -> "UNDEFINED"
     }
 
 fun de.mindmarket.ivyleemaster.task.data.Task.toDomainTask():Task =
@@ -76,13 +76,13 @@ fun de.mindmarket.ivyleemaster.task.data.Task.toDomainTask():Task =
         status = this.status.toDomainStatus()
     )
 
-fun String.toDomainStatus():de.mindmarket.ivyleemaster.task.domain.Status =
+fun String.toDomainStatus(): Status =
     when (this) {
-        "OPEN" -> de.mindmarket.ivyleemaster.task.domain.Status.OPEN
-        "IN_PROGRESS" ->  de.mindmarket.ivyleemaster.task.domain.Status.IN_PROGRESS
-        "DONE" ->  de.mindmarket.ivyleemaster.task.domain.Status.DONE
-        "OVERDRAWN" ->  de.mindmarket.ivyleemaster.task.domain.Status.OVERDRAWN
-        else ->  de.mindmarket.ivyleemaster.task.domain.Status.UNDEFINED
+        "OPEN" -> Status.OPEN
+        "IN_PROGRESS" ->  Status.IN_PROGRESS
+        "DONE" ->  Status.DONE
+        "OVERDRAWN" ->  Status.OVERDRAWN
+        else ->  Status.UNDEFINED
     }
 
 

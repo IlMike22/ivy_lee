@@ -10,7 +10,6 @@ import de.mindmarket.ivyleemaster.auth.domain.AuthRepository
 import de.mindmarket.ivyleemaster.core.domain.mapper.toDomainTask
 import de.mindmarket.ivyleemaster.task.domain.IdeaRepository
 import de.mindmarket.ivyleemaster.util.domain.Result
-import de.mindmarket.ivyleemaster.util.domain.asEmptyDataResult
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,7 +31,7 @@ class TaskViewModel(
     private val _eventChannel = Channel<TaskEvent>()
     val events = _eventChannel.receiveAsFlow()
 
-    val tasks = channelFlow {
+    val tasks = channelFlow { // TODO use local stored tasks as well
         repository.getLatestTasksFromLocal().collectLatest {
             trySend(it.map { it.toDomainTask() })
         }
@@ -40,35 +39,28 @@ class TaskViewModel(
 
     init {
         viewModelScope.launch {
+            _state.update { it.copy(
+                isError = false,
+                isLoading = true
+            ) }
+
             userId = authRepository.getUserId() ?: return@launch
             when (val result = repository.getTasks(userId)) {
                 is Result.Error -> _state.update {
                     it.copy(
                         tasks = emptyList(),
-                        isError = true
+                        isError = true,
+                        isLoading = false
                     )
                 }
 
                 is Result.Success -> _state.update {
                     it.copy(
                         tasks = result.data.map { it.toDomainTask() },
-                        isError = false
+                        isError = false,
+                        isLoading = false
                     )
                 }
-            }
-        }
-
-//        setupDataChangeListener() // TODO needed? since only be called in init does not make much sense...
-    }
-
-    private fun setupDataChangeListener() {
-        viewModelScope.launch {
-            repository.getDatasetUpdate(userId)
-
-            // fetching changed tasks list every time when sth changed and update ui state
-            tasks.collectLatest {
-                val latestTasks = it
-                _state.update { it.copy(tasks = latestTasks.map { it }) }
             }
         }
     }

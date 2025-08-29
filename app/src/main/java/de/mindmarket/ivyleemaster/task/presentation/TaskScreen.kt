@@ -37,6 +37,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.repeatOnLifecycle
 import de.mindmarket.ivyleemaster.R
 import de.mindmarket.ivyleemaster.core.presentation.GradientBackground
+import de.mindmarket.ivyleemaster.core.presentation.components.IvyTaskItem
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyToolbar
 import de.mindmarket.ivyleemaster.core.presentation.util.DropDownItem
 import de.mindmarket.ivyleemaster.idea.presentation.SwipeBox
@@ -186,19 +187,8 @@ fun TaskScreen(
                                         )
                                         .padding(8.dp)
                                 ) {
-                                    ListItem(
-                                        headlineContent = {
-                                            Text(text = task.title)
-                                        },
-                                        supportingContent = {
-                                            Text(text = task.description)
-                                        },
-                                        leadingContent = {
-                                            Icon(
-                                                imageVector = EyesOpen,
-                                                contentDescription = null
-                                            )
-                                        }
+                                    IvyTaskItem(
+                                        task = task
                                     )
 
                                     Spacer(Modifier.height(4.dp))
