@@ -77,7 +77,7 @@ fun IdeaScreenRoot(
                             Toast.makeText(
                                 context,
                                 getString(context, event.message),
-                                Toast.LENGTH_LONG
+                                Toast.LENGTH_SHORT
                             ).show()
                         }
                     }

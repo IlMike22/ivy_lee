@@ -75,7 +75,7 @@ class IdeaViewModel(
                 }
 
                 val task = Task(
-                    id = UUID.randomUUID().toString(),
+                    id = idea.id,
                     title = idea.title,
                     description = idea.subtitle,
                     status = Status.OPEN

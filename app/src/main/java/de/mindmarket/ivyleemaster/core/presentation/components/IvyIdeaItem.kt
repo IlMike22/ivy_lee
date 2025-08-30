@@ -59,7 +59,7 @@ fun IvyIdeaItem(
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(2.dp),
+                .padding(8.dp),
         ) {
             Row(
                 modifier = Modifier

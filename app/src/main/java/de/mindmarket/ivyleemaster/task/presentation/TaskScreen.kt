@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -41,7 +40,6 @@ import de.mindmarket.ivyleemaster.core.presentation.components.IvyTaskItem
 import de.mindmarket.ivyleemaster.core.presentation.components.IvyToolbar
 import de.mindmarket.ivyleemaster.core.presentation.util.DropDownItem
 import de.mindmarket.ivyleemaster.idea.presentation.SwipeBox
-import de.mindmarket.ivyleemaster.ui.theme.EyesOpen
 import de.mindmarket.ivyleemaster.ui.theme.IvyLeeMasterTheme
 import de.mindmarket.ivyleemaster.ui.theme.IvyLogo
 import de.mindmarket.ivyleemaster.ui.theme.Settings
@@ -68,7 +66,7 @@ fun TaskScreenRoot(
                             Toast.makeText(
                                 context,
                                 getString(context, event.message),
-                                Toast.LENGTH_LONG
+                                Toast.LENGTH_SHORT
                             ).show()
                         }
                     }
@@ -149,7 +147,7 @@ fun TaskScreen(
                             .fillMaxSize()
                     ) {
                         Text(
-                            text = stringResource(R.string.ivy_lee_task_loading_error_text),
+                            text = stringResource(R.string.task_loading_error_text),
                             modifier = Modifier.align(Alignment.Center)
                         )
                     }
@@ -171,7 +169,7 @@ fun TaskScreen(
                         ) {
                             items(
                                 items = state.tasks,
-                                key = { it.id } // TODO we need most-likely an id for the swipe mechanism but current id leads to problems switching from ideas to tasks tab
+                                key = { it.id }
                             ) { task ->
                                 SwipeBox(
                                     onDelete = {
@@ -188,7 +186,10 @@ fun TaskScreen(
                                         .padding(8.dp)
                                 ) {
                                     IvyTaskItem(
-                                        task = task
+                                        task = task,
+                                        onAction = {
+                                            onAction(TaskAction.OnTaskCompleteClick(task.id))
+                                        }
                                     )
 
                                     Spacer(Modifier.height(4.dp))

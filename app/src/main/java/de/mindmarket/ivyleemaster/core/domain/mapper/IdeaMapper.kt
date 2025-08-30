@@ -51,7 +51,7 @@ fun Genre.toGenreData() =
         else -> GenreData.UNDEFINED
     }
 
-fun Task.toTaskData():de.mindmarket.ivyleemaster.task.data.Task =
+fun Task.toTaskData(): de.mindmarket.ivyleemaster.task.data.Task =
     de.mindmarket.ivyleemaster.task.data.Task(
         id = this.id,
         title = this.title,
@@ -59,7 +59,7 @@ fun Task.toTaskData():de.mindmarket.ivyleemaster.task.data.Task =
         status = this.status.toStatusData()
     )
 
-fun Status.toStatusData():String =
+fun Status.toStatusData(): String =
     when (this) {
         Status.OPEN -> "OPEN"
         Status.IN_PROGRESS -> "IN_PROGRESS"
@@ -68,7 +68,7 @@ fun Status.toStatusData():String =
         Status.UNDEFINED -> "UNDEFINED"
     }
 
-fun de.mindmarket.ivyleemaster.task.data.Task.toDomainTask():Task =
+fun de.mindmarket.ivyleemaster.task.data.Task.toDomainTask(): Task =
     Task(
         id = this.id,
         title = this.title,
@@ -79,10 +79,10 @@ fun de.mindmarket.ivyleemaster.task.data.Task.toDomainTask():Task =
 fun String.toDomainStatus(): Status =
     when (this) {
         "OPEN" -> Status.OPEN
-        "IN_PROGRESS" ->  Status.IN_PROGRESS
-        "DONE" ->  Status.DONE
-        "OVERDRAWN" ->  Status.OVERDRAWN
-        else ->  Status.UNDEFINED
+        "IN_PROGRESS" -> Status.IN_PROGRESS
+        "DONE" -> Status.DONE
+        "OVERDRAWN" -> Status.OVERDRAWN
+        else -> Status.UNDEFINED
     }
 
 

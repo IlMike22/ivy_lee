@@ -38,6 +38,13 @@ class TaskViewModel(
     }
 
     init {
+        /**
+         * TODO Crucial: At the moment this code is executed every time the user clicks again on the
+         * Task tab even though there was no data change. What we most likely need here is a kind
+         * of flag in a public / shared VM that gives us the info if something changed (idea was
+         * moved to task) and only then we fetch the new data.
+         */
+
         viewModelScope.launch {
             _state.update { it.copy(
                 isError = false,
@@ -45,6 +52,7 @@ class TaskViewModel(
             ) }
 
             userId = authRepository.getUserId() ?: return@launch
+
             when (val result = repository.getTasks(userId)) {
                 is Result.Error -> _state.update {
                     it.copy(
@@ -98,7 +106,11 @@ class TaskViewModel(
             }
 
             TaskAction.OnSettingsClick -> TODO()
-            TaskAction.OnTaskCompleteClick -> TODO()
+            is TaskAction.OnTaskCompleteClick -> {
+                viewModelScope.launch {
+                    _eventChannel.send(TaskEvent.OnShowDeleteTaskMessage(R.string.task_on_task_complete_toast_))
+                }
+            }
             is TaskAction.OnTaskDeleteClick -> {
                 viewModelScope.launch {
                     val tasks = _state.value.tasks.toMutableList()
